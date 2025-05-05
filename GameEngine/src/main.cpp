@@ -14,7 +14,7 @@ const char* vertex_shader_source = "#version 330 core\n"
 const char* fragment_shader_source = "#version 330 core\n"
 	"out vec4 FragColor;\n"
 	"void main() {\n"
-	"	FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+	"	FragColor = vec4(0.5f, 0.7f, 0.3f, 1.0f);\n"
 	"}\0";
 
 int main() {
@@ -63,21 +63,36 @@ int main() {
 	glDeleteShader(vertex_shader);
 	glDeleteShader(fragment_shader);
 
-	// Triangle vertex data with vertex buffer (VBO)
+	// Vertex data
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
+		 0.5f,  0.5f, 0.0f,
 		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f
+		-0.5f, -0.5f, 0.0f,
+		-0.5f,  0.5f, 0.0f
 	};
 
+	// Index data
+	unsigned int indices[] = {
+		0, 1, 3,
+		1, 2, 3
+	};
+
+	// Vertex buffer (VBO)
 	unsigned int vbo;
 	glCreateBuffers(1, &vbo);
 	glNamedBufferData(vbo, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	// Element buffer (EBO)
+	unsigned int ebo;
+	glCreateBuffers(1, &ebo);
+	glNamedBufferData(ebo, sizeof(indices), indices, GL_STATIC_DRAW);
+
 	// Vertex array (VAO)
 	unsigned int vao;
 	glCreateVertexArrays(1, &vao);
+
 	glVertexArrayVertexBuffer(vao, 0, vbo, 0, 3 * sizeof(float));
+	glVertexArrayElementBuffer(vao, ebo);
 
 	glEnableVertexArrayAttrib(vao, 0);
 	glVertexArrayAttribBinding(vao, 0, 0);
@@ -93,7 +108,7 @@ int main() {
 
 		glUseProgram(shader_program);
 		glBindVertexArray(vao);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		
 		glfwSwapBuffers(window);
 	}
