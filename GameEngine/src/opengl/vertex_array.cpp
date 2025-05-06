@@ -1,5 +1,13 @@
 #include "vertex_array.h"
 
+/*
+*	Vertex Array
+* 
+*	A vertex array is able to store multiple attributes of vertices from vertex and element buffers.
+*	We tell it the structure of the data within these buffers so that it can later reference the data during render calls.
+*	The data from a vertex array is passed to the vertex shader for rendering.
+*/
+
 VertexArray::VertexArray() {
 	glCreateVertexArrays(1, &id);
 }
