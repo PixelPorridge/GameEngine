@@ -42,10 +42,13 @@ int main() {
 	};
 
 	VertexBuffer vertex_buffer(vertices);
+	VertexBufferLayout vertex_buffer_layout;
+	vertex_buffer_layout.push<GLfloat>(3);
+
 	ElementBuffer element_buffer(indices);
 
 	VertexArray vertex_array;
-	vertex_array.link_vertex_buffer(vertex_buffer);
+	vertex_array.link_vertex_buffer(vertex_buffer, vertex_buffer_layout);
 	vertex_array.link_element_buffer(element_buffer);
 
 	// Window render loop

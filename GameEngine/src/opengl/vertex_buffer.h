@@ -4,10 +4,12 @@
 #include <vector>
 
 class VertexBuffer {
-public:
+private:
 	GLuint id;
 
+public:
 	VertexBuffer(std::vector<GLfloat> vertices);
+	~VertexBuffer();
 
-	void delete_();
+	const GLuint get_id() const;
 };

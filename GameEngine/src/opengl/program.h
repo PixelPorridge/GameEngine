@@ -7,11 +7,13 @@
 #include <iostream>
 
 class Program {
-public:
+private:
 	GLuint id;
 
+public:
 	Program(const std::string& vertex_file, const std::string& fragment_file);
+	~Program();
 
+	const GLuint get_id() const;
 	void use() const;
-	void delete_();
 };

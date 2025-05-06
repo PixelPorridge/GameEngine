@@ -5,6 +5,10 @@ ElementBuffer::ElementBuffer(std::vector<GLuint> indices) {
 	glNamedBufferData(id, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
 }
 
-void ElementBuffer::delete_() {
+ElementBuffer::~ElementBuffer() {
 	glDeleteBuffers(1, &id);
+}
+
+const GLuint ElementBuffer::get_id() const {
+	return id;
 }

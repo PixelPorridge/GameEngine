@@ -4,10 +4,12 @@
 #include <vector>
 
 class ElementBuffer {
-public:
+private:
 	GLuint id;
 
+public:
 	ElementBuffer(std::vector<GLuint> indices);
+	~ElementBuffer();
 
-	void delete_();
+	const GLuint get_id() const;
 };

@@ -5,6 +5,10 @@ VertexBuffer::VertexBuffer(std::vector<GLfloat> vertices) {
 	glNamedBufferData(id, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
 }
 
-void VertexBuffer::delete_() {
+VertexBuffer::~VertexBuffer() {
 	glDeleteBuffers(1, &id);
+}
+
+const GLuint VertexBuffer::get_id() const {
+	return id;
 }

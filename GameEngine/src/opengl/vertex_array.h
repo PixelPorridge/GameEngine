@@ -1,21 +1,22 @@
 #pragma once
 
-#include "vertex_buffer.h"
-#include "element_buffer.h"
-
 #include <glad/glad.h>
 
-class VertexArray {
+#include "vertex_buffer.h"
+#include "element_buffer.h"
+#include "vertex_buffer_layout.h"
 
-public:
+class VertexArray {
+private:
 	GLuint id;
 
+public:
 	VertexArray();
+	~VertexArray();
 
-	void link_vertex_buffer(VertexBuffer vertex_buffer) const;
+	void link_vertex_buffer(VertexBuffer vertex_buffer, VertexBufferLayout layout) const;
 	void link_element_buffer(ElementBuffer element_buffer) const;
 
+	const GLuint get_id() const;
 	void bind() const;
-
-	void delete_();
 };

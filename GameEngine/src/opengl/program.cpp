@@ -38,10 +38,14 @@ Program::Program(const std::string& vertex_file_name, const std::string& fragmen
 	glDeleteShader(fragment_shader);
 }
 
-void Program::use() const {
-	glUseProgram(id);
+Program::~Program() {
+	glDeleteProgram(id);
 }
 
-void Program::delete_() {
-	glDeleteProgram(id);
+const GLuint Program::get_id() const {
+	return id;
+}
+
+void Program::use() const {
+	glUseProgram(id);
 }
