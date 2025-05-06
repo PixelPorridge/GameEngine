@@ -30,10 +30,10 @@ int main() {
 	Program program("src/shaders/default.vert", "src/shaders/default.frag");
 
 	std::vector<GLfloat> vertices = {
-		 0.5f,  0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		-0.5f,  0.5f, 0.0f
+		 0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f,
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+		-0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f
 	};
 
 	std::vector<GLuint> indices = {
@@ -43,6 +43,7 @@ int main() {
 
 	VertexBuffer vertex_buffer(vertices);
 	VertexBufferLayout vertex_buffer_layout;
+	vertex_buffer_layout.push<GLfloat>(3);
 	vertex_buffer_layout.push<GLfloat>(3);
 
 	ElementBuffer element_buffer(indices);
@@ -56,7 +57,7 @@ int main() {
 		glfwPollEvents();
 		process_input(window);
 
-		glClearColor(0.3f, 0.2f, 0.6f, 1.0f);
+		glClearColor(0.25f, 0.4f, 0.9f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		program.use();

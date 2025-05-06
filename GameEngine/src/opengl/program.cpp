@@ -10,7 +10,7 @@
 *	The compiled shaders are then attached to the program, which can later be used when rendering.
 */
 
-std::string read_file(const std::string& file_name) {
+static std::string read_file(const std::string& file_name) {
 	std::ifstream file(file_name);
 
 	std::stringstream buffer;
