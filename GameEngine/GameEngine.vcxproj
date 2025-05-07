@@ -56,6 +56,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -86,6 +87,7 @@
     <ClInclude Include="external\include\KHR\khrplatform.h" />
     <ClInclude Include="external\include\stb\stb_image.h" />
     <ClInclude Include="src\main.h" />
+    <ClInclude Include="src\maths\vector2.h" />
     <ClInclude Include="src\opengl\element_buffer.h" />
     <ClInclude Include="src\opengl\program.h" />
     <ClInclude Include="src\opengl\texture.h" />
@@ -97,6 +99,7 @@
     <ClCompile Include="external\src\glad.c" />
     <ClCompile Include="external\src\stb_image.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\maths\vector2.cpp" />
     <ClCompile Include="src\opengl\element_buffer.cpp" />
     <ClCompile Include="src\opengl\program.cpp" />
     <ClCompile Include="src\opengl\texture.cpp" />

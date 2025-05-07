@@ -12,6 +12,7 @@
 #include "opengl/vertex_array.h"
 #include "opengl/vertex_buffer_layout.h"
 #include "opengl/texture.h"
+#include "maths/vector2.h"
 
 void process_input(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
