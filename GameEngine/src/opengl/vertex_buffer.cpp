@@ -10,7 +10,7 @@
 *	The structure of the data is configured in a vertex array.
 */
 
-VertexBuffer::VertexBuffer(std::vector<float> vertices) {
+VertexBuffer::VertexBuffer(const std::vector<float>& vertices) {
 	glCreateBuffers(1, &id);
 	glNamedBufferData(id, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 }

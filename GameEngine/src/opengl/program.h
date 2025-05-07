@@ -11,7 +11,7 @@ private:
 	unsigned int id;
 
 public:
-	Program(const std::string& vertex_file, const std::string& fragment_file);
+	Program(const std::string& vertex_path, const std::string& fragment_path);
 	~Program();
 
 	const unsigned int get_id() const;

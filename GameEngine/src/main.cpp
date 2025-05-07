@@ -1,7 +1,6 @@
 #include "main.h"
 
 int main() {
-	// Initialise GLFW window
 	glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -19,32 +18,34 @@ int main() {
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	// Initialise Glad
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cout << "Failed to initialise Glad!" << std::endl;
 		return -1;
 	}
 
 	glViewport(0, 0, 800, 600);
+	stbi_set_flip_vertically_on_load(true);
 
-	Program program("src/shaders/default.vert", "src/shaders/default.frag");
+	Program program("assets/shaders/default.vert", "assets/shaders/default.frag");
 
 	std::vector<float> vertices = {
-		 0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f,
-		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-		-0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f
+		// Positions         // Colours         // Texture coords
+		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f,  // Bottom left
+		-0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,  // Top left
+		 0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f,  // Bottom right
+		 0.5f,  0.5f, 0.0f,  1.0f, 1.0f, 0.0f,  1.0f, 1.0f,  // Top right
 	};
 
 	std::vector<int> indices = {
-		0, 1, 3,
+		0, 1, 2,
 		1, 2, 3
 	};
 
 	VertexBuffer vertex_buffer(vertices);
 	VertexBufferLayout vertex_buffer_layout;
-	vertex_buffer_layout.push<GLfloat>(3);
-	vertex_buffer_layout.push<GLfloat>(3);
+	vertex_buffer_layout.push<float>(3);
+	vertex_buffer_layout.push<float>(3);
+	vertex_buffer_layout.push<float>(2);
 
 	ElementBuffer element_buffer(indices);
 
@@ -52,7 +53,12 @@ int main() {
 	vertex_array.link_vertex_buffer(vertex_buffer, vertex_buffer_layout);
 	vertex_array.link_element_buffer(element_buffer);
 
-	// Window render loop
+	Texture container_texture("assets/textures/container.jpg");
+	container_texture.bind(0);
+
+	Texture awesome_face_texture("assets/textures/awesomeface.png");
+	awesome_face_texture.bind(1);
+
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 		process_input(window);
@@ -67,7 +73,6 @@ int main() {
 		glfwSwapBuffers(window);
 	}
 	
-	// Cleanup
 	glfwTerminate();
 	return 0;
 }

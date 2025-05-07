@@ -14,8 +14,8 @@ public:
 	VertexArray();
 	~VertexArray();
 
-	void link_vertex_buffer(VertexBuffer vertex_buffer, VertexBufferLayout layout) const;
-	void link_element_buffer(ElementBuffer element_buffer) const;
+	void link_vertex_buffer(const VertexBuffer& vertex_buffer, const VertexBufferLayout& layout) const;
+	void link_element_buffer(const ElementBuffer& element_buffer) const;
 
 	const unsigned int get_id() const;
 	void bind() const;

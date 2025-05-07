@@ -8,7 +8,7 @@
 *	The vertex array that is using an element buffer does not need to know anything about the structure of the data.
 */
 
-ElementBuffer::ElementBuffer(std::vector<int> indices) {
+ElementBuffer::ElementBuffer(const std::vector<int>& indices) {
 	glCreateBuffers(1, &id);
 	glNamedBufferData(id, indices.size() * sizeof(int), indices.data(), GL_STATIC_DRAW);
 }

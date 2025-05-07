@@ -10,8 +10,8 @@
 *	The compiled shaders are then attached to the program, which can later be used when rendering.
 */
 
-static std::string read_file(const std::string& file_name) {
-	std::ifstream file(file_name);
+static std::string read_file(const std::string& path) {
+	std::ifstream file(path);
 
 	std::stringstream buffer;
 	buffer << file.rdbuf();
@@ -19,10 +19,10 @@ static std::string read_file(const std::string& file_name) {
 	return buffer.str();
 }
 
-Program::Program(const std::string& vertex_file_name, const std::string& fragment_file_name) {
+Program::Program(const std::string& vertex_path, const std::string& fragment_path) {
 	// Read shader files
-	std::string vertex_source = read_file(vertex_file_name);
-	std::string fragment_source = read_file(fragment_file_name);
+	std::string vertex_source = read_file(vertex_path);
+	std::string fragment_source = read_file(fragment_path);
 
 	const char* vertex_source_c = vertex_source.c_str();
 	const char* fragment_source_c = fragment_source.c_str();

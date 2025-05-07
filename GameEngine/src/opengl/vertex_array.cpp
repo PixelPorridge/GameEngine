@@ -16,7 +16,7 @@ VertexArray::~VertexArray() {
 	glDeleteVertexArrays(1, &id);
 }
 
-void VertexArray::link_vertex_buffer(VertexBuffer vertex_buffer, VertexBufferLayout layout) const {
+void VertexArray::link_vertex_buffer(const VertexBuffer& vertex_buffer, const VertexBufferLayout& layout) const {
 	glVertexArrayVertexBuffer(id, 0, vertex_buffer.get_id(), 0, layout.get_stride());
 
 	const std::vector<VertexBufferAttribute>& attributes = layout.get_attributes();
@@ -30,7 +30,7 @@ void VertexArray::link_vertex_buffer(VertexBuffer vertex_buffer, VertexBufferLay
 	}
 }
 
-void VertexArray::link_element_buffer(ElementBuffer element_buffer) const {
+void VertexArray::link_element_buffer(const ElementBuffer& element_buffer) const {
 	glVertexArrayElementBuffer(id, element_buffer.get_id());
 }
 
