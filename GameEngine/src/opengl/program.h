@@ -8,12 +8,12 @@
 
 class Program {
 private:
-	GLuint id;
+	unsigned int id;
 
 public:
 	Program(const std::string& vertex_file, const std::string& fragment_file);
 	~Program();
 
-	const GLuint get_id() const;
+	const unsigned int get_id() const;
 	void use() const;
 };

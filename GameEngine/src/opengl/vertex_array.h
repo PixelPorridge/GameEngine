@@ -8,7 +8,7 @@
 
 class VertexArray {
 private:
-	GLuint id;
+	unsigned int id;
 
 public:
 	VertexArray();
@@ -17,6 +17,6 @@ public:
 	void link_vertex_buffer(VertexBuffer vertex_buffer, VertexBufferLayout layout) const;
 	void link_element_buffer(ElementBuffer element_buffer) const;
 
-	const GLuint get_id() const;
+	const unsigned int get_id() const;
 	void bind() const;
 };

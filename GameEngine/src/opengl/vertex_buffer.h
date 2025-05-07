@@ -5,11 +5,11 @@
 
 class VertexBuffer {
 private:
-	GLuint id;
+	unsigned int id;
 
 public:
-	VertexBuffer(std::vector<GLfloat> vertices);
+	VertexBuffer(std::vector<float> vertices);
 	~VertexBuffer();
 
-	const GLuint get_id() const;
+	const unsigned int get_id() const;
 };

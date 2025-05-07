@@ -12,44 +12,38 @@
 */
 
 struct VertexBufferAttribute {
-	GLint size;
-	GLenum type;
-	GLboolean normalised;
-	GLuint offset;
+	int size;
+	unsigned int type;
+	bool normalised;
+	int offset;
 };
 
 class VertexBufferLayout {
 private:
 	std::vector<VertexBufferAttribute> attributes;
-	GLsizei stride = 0;
+	int stride = 0;
 
 public:
 	template<typename T>
-	void push(GLint size);
+	void push(int size);
 
 	template<>
-	void push<GLfloat>(GLint size) {
-		attributes.push_back({size, GL_FLOAT, GL_FALSE, (GLuint)stride});
-		stride += size * sizeof(GLfloat);
+	void push<float>(int size) {
+		attributes.push_back({size, GL_FLOAT, GL_FALSE, stride});
+		stride += size * sizeof(float);
 	}
 
 	template<>
-	void push<GLuint>(GLint size) {
-		attributes.push_back({size, GL_UNSIGNED_INT, GL_FALSE, (GLuint)stride});
-		stride += size * sizeof(GLuint);
-	}
-
-	template<>
-	void push<GLubyte>(GLint size) {
-		attributes.push_back({size, GL_UNSIGNED_BYTE, GL_FALSE, (GLuint)stride});
-		stride += size * sizeof(GLubyte);
+	void push<int>(int size) {
+		attributes.push_back({size, GL_INT, GL_FALSE, stride});
+		stride += size * sizeof(int);
 	}
 
 	inline const std::vector<VertexBufferAttribute>& get_attributes() const {
 		return attributes;
 	}
 
-	inline const GLsizei get_stride() const {
+	inline const int get_stride() const {
 		return stride;
 	}
 };

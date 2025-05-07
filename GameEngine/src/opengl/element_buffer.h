@@ -5,11 +5,11 @@
 
 class ElementBuffer {
 private:
-	GLuint id;
+	unsigned int id;
 
 public:
-	ElementBuffer(std::vector<GLuint> indices);
+	ElementBuffer(std::vector<int> indices);
 	~ElementBuffer();
 
-	const GLuint get_id() const;
+	const unsigned int get_id() const;
 };

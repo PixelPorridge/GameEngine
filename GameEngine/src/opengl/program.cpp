@@ -24,16 +24,16 @@ Program::Program(const std::string& vertex_file_name, const std::string& fragmen
 	std::string vertex_source = read_file(vertex_file_name);
 	std::string fragment_source = read_file(fragment_file_name);
 
-	const GLchar* vertex_source_c = vertex_source.c_str();
-	const GLchar* fragment_source_c = fragment_source.c_str();
+	const char* vertex_source_c = vertex_source.c_str();
+	const char* fragment_source_c = fragment_source.c_str();
 
 	// Vertex shader
-	GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+	unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertex_shader, 1, &vertex_source_c, nullptr);
 	glCompileShader(vertex_shader);
 
 	// Fragment shader
-	GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+	unsigned int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragment_shader, 1, &fragment_source_c, nullptr);
 	glCompileShader(fragment_shader);
 
@@ -52,7 +52,7 @@ Program::~Program() {
 	glDeleteProgram(id);
 }
 
-const GLuint Program::get_id() const {
+const unsigned int Program::get_id() const {
 	return id;
 }
 
