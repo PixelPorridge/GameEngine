@@ -5,7 +5,7 @@
 
 class VertexBuffer {
 private:
-	unsigned int id;
+	unsigned int id = 0;
 
 public:
 	VertexBuffer(const std::vector<float>& vertices);

@@ -90,6 +90,7 @@
     <ClInclude Include="src\maths\vector2.h" />
     <ClInclude Include="src\opengl\element_buffer.h" />
     <ClInclude Include="src\opengl\program.h" />
+    <ClInclude Include="src\opengl\shader.h" />
     <ClInclude Include="src\opengl\texture.h" />
     <ClInclude Include="src\opengl\vertex_array.h" />
     <ClInclude Include="src\opengl\vertex_buffer.h" />
@@ -102,9 +103,11 @@
     <ClCompile Include="src\maths\vector2.cpp" />
     <ClCompile Include="src\opengl\element_buffer.cpp" />
     <ClCompile Include="src\opengl\program.cpp" />
+    <ClCompile Include="src\opengl\shader.cpp" />
     <ClCompile Include="src\opengl\texture.cpp" />
     <ClCompile Include="src\opengl\vertex_array.cpp" />
     <ClCompile Include="src\opengl\vertex_buffer.cpp" />
+    <ClCompile Include="src\opengl\vertex_buffer_layout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="external\lib\glfw3.lib" />

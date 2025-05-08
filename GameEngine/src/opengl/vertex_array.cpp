@@ -24,7 +24,7 @@ void VertexArray::link_vertex_buffer(const VertexBuffer& vertex_buffer, const Ve
 	for (int index = 0; index < attributes.size(); index++) {
 		const VertexBufferAttribute& attribute = attributes[index];
 
-		glVertexArrayAttribFormat(id, index, attribute.size, attribute.type, attribute.normalised, attribute.offset);
+		glVertexArrayAttribFormat(id, index, attribute.size, GL_FLOAT, GL_FALSE, attribute.offset);
 		glVertexArrayAttribBinding(id, index, 0);
 		glEnableVertexArrayAttrib(id, index);
 	}
@@ -34,10 +34,10 @@ void VertexArray::link_element_buffer(const ElementBuffer& element_buffer) const
 	glVertexArrayElementBuffer(id, element_buffer.get_id());
 }
 
-const unsigned int VertexArray::get_id() const {
-	return id;
-}
-
 void VertexArray::bind() const {
 	glBindVertexArray(id);
+}
+
+const unsigned int VertexArray::get_id() const {
+	return id;
 }

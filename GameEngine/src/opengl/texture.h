@@ -6,12 +6,12 @@
 
 class Texture {
 private:
-	unsigned int id;
+	unsigned int id = 0;
 
 public:
 	Texture(const std::string& path);
 	~Texture();
 
-	const unsigned int get_id() const;
 	void bind(int unit) const;
+	const unsigned int get_id() const;
 };

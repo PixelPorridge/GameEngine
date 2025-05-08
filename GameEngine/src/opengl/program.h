@@ -1,19 +1,17 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
+
+#include "shader.h"
 
 class Program {
 private:
-	unsigned int id;
+	unsigned int id = 0;
 
 public:
-	Program(const std::string& vertex_path, const std::string& fragment_path);
+	Program(const Shader& vertex, const Shader& fragment);
 	~Program();
 
-	const unsigned int get_id() const;
 	void use() const;
+	const unsigned int get_id() const;
 };

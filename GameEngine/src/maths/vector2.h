@@ -40,12 +40,12 @@ public:
 
 	bool operator==(const Vector2& other) const;
 	bool operator!=(const Vector2& other) const;
+
+	friend Vector2 operator+(float scalar, const Vector2& vector) {
+		return vector + scalar;
+	}
+
+	friend Vector2 operator*(float scalar, const Vector2& vector) {
+		return vector * scalar;
+	}
 };
-
-Vector2 operator+(float scalar, const Vector2& vector) {
-	return Vector2(vector.x + scalar, vector.y + scalar);
-}
-
-Vector2 operator*(float scalar, const Vector2& vector) {
-	return Vector2(vector.x * scalar, vector.y * scalar);
-}

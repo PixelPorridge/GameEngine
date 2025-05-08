@@ -26,8 +26,6 @@ int main() {
 	glViewport(0, 0, 800, 600);
 	stbi_set_flip_vertically_on_load(true);
 
-	Program program("assets/shaders/default.vert", "assets/shaders/default.frag");
-
 	std::vector<float> vertices = {
 		// Positions         // Colours         // Texture coords
 		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f,  // Bottom left
@@ -43,9 +41,9 @@ int main() {
 
 	VertexBuffer vertex_buffer(vertices);
 	VertexBufferLayout vertex_buffer_layout;
-	vertex_buffer_layout.push<float>(3);
-	vertex_buffer_layout.push<float>(3);
-	vertex_buffer_layout.push<float>(2);
+	vertex_buffer_layout.push(3);
+	vertex_buffer_layout.push(3);
+	vertex_buffer_layout.push(2);
 
 	ElementBuffer element_buffer(indices);
 
@@ -58,6 +56,10 @@ int main() {
 
 	Texture awesome_face_texture("assets/textures/awesomeface.png");
 	awesome_face_texture.bind(1);
+
+	Shader vertex_shader("assets/shaders/default.vert");
+	Shader fragment_shader("assets/shaders/default.frag");
+	Program program(vertex_shader, fragment_shader);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();

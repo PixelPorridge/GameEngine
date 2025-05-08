@@ -1,15 +1,17 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <vector>
+#include <string>
+#include <fstream>
+#include <sstream>
 
-class ElementBuffer {
+class Shader {
 private:
 	unsigned int id = 0;
 
 public:
-	ElementBuffer(const std::vector<int>& indices);
-	~ElementBuffer();
+	Shader(const std::string& path);
+	~Shader();
 
 	const unsigned int get_id() const;
 };
