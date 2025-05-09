@@ -3,8 +3,8 @@
 /*
 *	Vector2
 * 
-*	Composed of both an x and y component.
-*	Vectors can represent a direction with a magnitude, or a point in space.
+*	Composed of an x and y component.
+*	Represents a direction or point in 2D space.
 */
 
 float Vector2::length() const {
@@ -17,17 +17,23 @@ float Vector2::length_squared() const {
 
 void Vector2::normalise() {
 	float length = std::sqrt(x * x + y * y);
+
 	x /= length;
 	y /= length;
 }
 
 Vector2 Vector2::normalised() const {
 	float length = std::sqrt(x * x + y * y);
+
 	return Vector2(x / length, y / length);
 }
 
 float Vector2::dot(const Vector2& other) const {
 	return x * other.x + y * other.y;
+}
+
+Vector2 Vector2::operator+() const {
+	return Vector2(x, y);
 }
 
 Vector2 Vector2::operator-() const {

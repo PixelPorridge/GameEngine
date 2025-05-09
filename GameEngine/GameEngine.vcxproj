@@ -88,6 +88,8 @@
     <ClInclude Include="external\include\stb\stb_image.h" />
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\maths\vector2.h" />
+    <ClInclude Include="src\maths\vector3.h" />
+    <ClInclude Include="src\maths\vector4.h" />
     <ClInclude Include="src\opengl\element_buffer.h" />
     <ClInclude Include="src\opengl\program.h" />
     <ClInclude Include="src\opengl\shader.h" />
@@ -101,6 +103,8 @@
     <ClCompile Include="external\src\stb_image.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\maths\vector2.cpp" />
+    <ClCompile Include="src\maths\vector3.cpp" />
+    <ClCompile Include="src\maths\vector4.cpp" />
     <ClCompile Include="src\opengl\element_buffer.cpp" />
     <ClCompile Include="src\opengl\program.cpp" />
     <ClCompile Include="src\opengl\shader.cpp" />

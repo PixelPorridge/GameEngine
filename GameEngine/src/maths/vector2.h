@@ -6,7 +6,8 @@ class Vector2 {
 public:
 	float x, y;
 
-	Vector2(float x = 0.0f, float y = 0.0f) : x(x), y(y) {}
+	Vector2() : x(0), y(0) {}
+	Vector2(float x, float y) : x(x), y(y) {}
 
 	float length() const;
 	float length_squared() const;
@@ -16,6 +17,7 @@ public:
 
 	float dot(const Vector2& other) const;
 
+	Vector2 operator+() const;
 	Vector2 operator-() const;
 
 	Vector2 operator+(const Vector2& other) const;
