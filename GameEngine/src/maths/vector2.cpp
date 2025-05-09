@@ -32,6 +32,14 @@ float Vector2::dot(const Vector2& other) const {
 	return x * other.x + y * other.y;
 }
 
+const float& Vector2::operator[](int index) const {
+	return axis[index];
+}
+
+float& Vector2::operator[](int index) {
+	return axis[index];
+}
+
 Vector2 Vector2::operator+() const {
 	return Vector2(x, y);
 }

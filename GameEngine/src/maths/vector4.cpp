@@ -7,6 +7,14 @@
 *	This vector type is not typically used to represent a point in space.
 */
 
+const float& Vector4::operator[](int index) const {
+	return axis[index];
+}
+
+float& Vector4::operator[](int index) {
+	return axis[index];
+}
+
 Vector4 Vector4::operator+() const {
 	return Vector4(x, y, z, w);
 }

@@ -41,6 +41,14 @@ Vector3 Vector3::cross(const Vector3& other) const {
 	);
 }
 
+const float& Vector3::operator[](int index) const {
+	return axis[index];
+}
+
+float& Vector3::operator[](int index) {
+	return axis[index];
+}
+
 Vector3 Vector3::operator+() const {
 	return Vector3(x, y, z);
 }

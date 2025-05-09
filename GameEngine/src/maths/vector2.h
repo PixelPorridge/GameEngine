@@ -4,7 +4,10 @@
 
 class Vector2 {
 public:
-	float x, y;
+	union {
+		struct { float x, y; };
+		float axis[2];
+	};
 
 	Vector2() : x(0), y(0) {}
 	Vector2(float x, float y) : x(x), y(y) {}
@@ -16,6 +19,9 @@ public:
 	Vector2 normalised() const;
 
 	float dot(const Vector2& other) const;
+
+	const float& operator[](int index) const;
+	float& operator[](int index);
 
 	Vector2 operator+() const;
 	Vector2 operator-() const;

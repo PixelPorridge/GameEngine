@@ -4,7 +4,10 @@
 
 class Vector3 {
 public:
-	float x, y, z;
+	union {
+		struct { float x, y, z; };
+		float axis[3];
+	};
 
 	Vector3() : x(0), y(0), z(0) {}
 	Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
@@ -17,6 +20,9 @@ public:
 
 	float dot(const Vector3& other) const;
 	Vector3 cross(const Vector3& other) const;
+
+	const float& operator[](int index) const;
+	float& operator[](int index);
 
 	Vector3 operator+() const;
 	Vector3 operator-() const;
