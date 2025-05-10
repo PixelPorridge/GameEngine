@@ -63,7 +63,7 @@
     <ClInclude Include="src\maths\vector3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\maths\matrix4.h">
+    <ClInclude Include="src\maths\transformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -107,7 +107,7 @@
     <ClCompile Include="src\maths\vector3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\maths\matrix4.cpp">
+    <ClCompile Include="src\maths\transformation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
