@@ -4,11 +4,13 @@ layout(location = 0) in vec3 in_position;
 layout(location = 1) in vec3 in_colour;
 layout(location = 2) in vec2 in_texture_coords;
 
+uniform mat4 transform;
+
 out vec3 colour;
 out vec2 texture_coords;
 
 void main() {
-	gl_Position = vec4(in_position, 1.0);
+	gl_Position = transform * vec4(in_position, 1.0);
 	colour = in_colour;
 	texture_coords = in_texture_coords;
 }

@@ -45,7 +45,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)external\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)external\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)external\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)\</IntDir>
@@ -88,7 +88,7 @@
     <ClInclude Include="external\include\stb\stb_image.h" />
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\maths\maths.h" />
-    <ClInclude Include="src\maths\transformation.h" />
+    <ClInclude Include="src\maths\matrix4.h" />
     <ClInclude Include="src\maths\vector2.h" />
     <ClInclude Include="src\maths\vector3.h" />
     <ClInclude Include="src\maths\vector4.h" />
@@ -104,7 +104,7 @@
     <ClCompile Include="external\src\glad.c" />
     <ClCompile Include="external\src\stb_image.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\maths\transformation.cpp" />
+    <ClCompile Include="src\maths\matrix4.cpp" />
     <ClCompile Include="src\maths\vector2.cpp" />
     <ClCompile Include="src\maths\vector3.cpp" />
     <ClCompile Include="src\maths\vector4.cpp" />

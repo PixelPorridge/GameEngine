@@ -12,6 +12,6 @@ public:
 	Texture(const std::string& path);
 	~Texture();
 
-	void bind(int unit) const;
 	const unsigned int get_id() const;
+	void bind(int unit) const;
 };

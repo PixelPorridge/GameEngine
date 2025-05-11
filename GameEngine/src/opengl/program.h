@@ -1,8 +1,10 @@
 #pragma once
 
-#include <glad/glad.h>
-
 #include "shader.h"
+#include "maths/matrix4.h"
+
+#include <glad/glad.h>
+#include <string>
 
 class Program {
 private:
@@ -12,6 +14,8 @@ public:
 	Program(const Shader& vertex, const Shader& fragment);
 	~Program();
 
-	void use() const;
 	const unsigned int get_id() const;
+	void use() const;
+
+	void set_mat4(const std::string& name, const Matrix4& matrix) const;
 };

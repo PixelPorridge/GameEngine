@@ -4,14 +4,10 @@
 #include <limits>
 
 namespace Maths {
-	// Definitions
-
 	constexpr float PI = 3.14159265358979323846f;
 	constexpr float TAU = 6.28318530717958647692f;
 	constexpr float EPSILON = std::numeric_limits<float>::epsilon();
 	constexpr float INF = std::numeric_limits<float>::infinity();
-
-	// Trigonometric
 
 	inline float sin(float value) {
 		return std::sin(value);
@@ -33,8 +29,6 @@ namespace Maths {
 		return radians * 180 / Maths::PI;
 	}
 
-	// Exponential & Logarithmic
-
 	inline float exp(float value) {
 		return std::exp(value);
 	}
@@ -43,8 +37,6 @@ namespace Maths {
 		return std::log(value);
 	}
 
-	// Power
-
 	inline float pow(float base, float exponent) {
 		return std::pow(base, exponent);
 	}
@@ -52,8 +44,6 @@ namespace Maths {
 	inline float sqrt(float value) {
 		return std::sqrt(value);
 	}
-
-	// Rounding
 
 	inline float ceil(float value) {
 		return std::ceil(value);
@@ -67,7 +57,9 @@ namespace Maths {
 		return std::round(value);
 	}
 
-	// Approximations
+	inline float abs(float value) {
+		return std::abs(value);
+	}
 
 	inline bool is_almost_zero(float value) {
 		if (std::abs(value) < EPSILON) {
@@ -83,11 +75,5 @@ namespace Maths {
 		}
 
 		return value;
-	}
-
-	// Other
-
-	inline float abs(float value) {
-		return std::abs(value);
 	}
 }

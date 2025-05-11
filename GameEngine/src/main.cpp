@@ -56,16 +56,10 @@ int main() {
 
 	Texture awesome_face_texture("assets/textures/awesomeface.png");
 	awesome_face_texture.bind(1);
-
+	 
 	Shader vertex_shader("assets/shaders/default.vert");
 	Shader fragment_shader("assets/shaders/default.frag");
 	Program program(vertex_shader, fragment_shader);
-
-	Transformation transformation;
-	transformation.rotate(Maths::PI / 2.0f, Vector3(0, 0, 1));
-	//transformation.scale(Vector3(2, 2, 2));
-	//transformation.translate(Vector3(3, 2, 5));
-	std::cout << transformation << std::endl;
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -73,6 +67,12 @@ int main() {
 
 		glClearColor(0.25f, 0.4f, 0.9f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		Matrix4 transform;
+		transform.translate(Vector3(0.5f, -0.5f, 0.0f));
+		transform.rotate((float)glfwGetTime(), Vector3(0, 0, 1));
+
+		program.set_mat4("transform", transform);
 
 		program.use();
 		vertex_array.bind();

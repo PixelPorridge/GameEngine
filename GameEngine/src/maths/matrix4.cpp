@@ -1,7 +1,7 @@
-#include "transformation.h"
+#include "matrix4.h"
 
 /*
-*	Transformation
+*	Matrix4
 * 
 *	Represents a 4x4 transformation matrix.
 *	Stored in column-major order.
@@ -13,17 +13,17 @@
 *	[i][3]	| 0 | 0 | 0 | 1 |
 */
 
-void Transformation::translate(const Vector3& translation) {
+void Matrix4::translate(const Vector3& translation) {
 	w += x * translation.x + y * translation.y + z * translation.z;
 }
 
-void Transformation::rotate(float angle, const Vector3& axis) {
+void Matrix4::rotate(float angle, const Vector3& axis) {
 	Vector3 axis_normalised = axis.normalised();
 
 	float sin_theta = Maths::sin(angle);
 	float cos_theta = Maths::cos(angle);
 
-	Transformation rotation;
+	Matrix4 rotation;
 
 	// Formula from https://learnopengl.com/Getting-started/Transformations
 	rotation.x.x = Maths::zero_if_almost(cos_theta + Maths::pow(axis_normalised.x, 2.0f) * (1 - cos_theta));
@@ -38,30 +38,34 @@ void Transformation::rotate(float angle, const Vector3& axis) {
 	rotation.z.y = Maths::zero_if_almost(axis_normalised.y * axis_normalised.z * (1 - cos_theta) - axis_normalised.x * sin_theta);
 	rotation.z.z = Maths::zero_if_almost(cos_theta + Maths::pow(axis_normalised.z, 2.0f) * (1 - cos_theta));
 
-	Transformation new_transformation = (*this) * rotation;
+	Matrix4 new_matrix = (*this) * rotation;
 
-	x = new_transformation.x;
-	y = new_transformation.y;
-	z = new_transformation.z;
-	w = new_transformation.w;
+	x = new_matrix.x;
+	y = new_matrix.y;
+	z = new_matrix.z;
+	w = new_matrix.w;
 }
 
-void Transformation::scale(const Vector3& factor) {
+void Matrix4::scale(const Vector3& factor) {
 	x *= factor.x;
 	y *= factor.y;
 	z *= factor.z;
 }
 
-const Vector4& Transformation::operator[](int index) const {
+const float* Matrix4::get_pointer() const {
+	return &(x.x);
+}
+
+const Vector4& Matrix4::operator[](int index) const {
 	return columns[index];
 }
 
-Vector4& Transformation::operator[](int index) {
+Vector4& Matrix4::operator[](int index) {
 	return columns[index];
 }
 
-Transformation Transformation::operator*(const Transformation& other) const {
-	Transformation new_transformation;
+Matrix4 Matrix4::operator*(const Matrix4& other) const {
+	Matrix4 new_matrix;
 
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -71,14 +75,14 @@ Transformation Transformation::operator*(const Transformation& other) const {
 				value += columns[k][j] * other[i][k];
 			}
 
-			new_transformation[i][j] = value;
+			new_matrix[i][j] = value;
 		}
 	}
 
-	return new_transformation;
+	return new_matrix;
 }
 
-Vector4 Transformation::operator*(const Vector4& vector) const {
+Vector4 Matrix4::operator*(const Vector4& vector) const {
 	Vector4 new_vector;
 
 	for (int i = 0; i < 4; i++) {
@@ -94,16 +98,16 @@ Vector4 Transformation::operator*(const Vector4& vector) const {
 	return new_vector;
 }
 
-void Transformation::operator*=(const Transformation& other) {
-	Transformation new_transformation = *this * other;
+void Matrix4::operator*=(const Matrix4& other) {
+	Matrix4 new_matrix = *this * other;
 
-	x = new_transformation.x;
-	y = new_transformation.y;
-	z = new_transformation.z;
-	w = new_transformation.w;
+	x = new_matrix.x;
+	y = new_matrix.y;
+	z = new_matrix.z;
+	w = new_matrix.w;
 }
 
-bool Transformation::operator==(const Transformation& other) const {
+bool Matrix4::operator==(const Matrix4& other) const {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			if (columns[i][j] != other[i][j]) {
@@ -115,7 +119,7 @@ bool Transformation::operator==(const Transformation& other) const {
 	return true;
 }
 
-bool Transformation::operator!=(const Transformation& other) const {
+bool Matrix4::operator!=(const Matrix4& other) const {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			if (columns[i][j] != other[i][j]) {
