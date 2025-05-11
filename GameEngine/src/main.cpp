@@ -62,7 +62,7 @@ int main() {
 	Program program(vertex_shader, fragment_shader);
 
 	Transformation transformation;
-	transformation.rotate(-std::numbers::pi / 2, Vector3(0, 0, 1));
+	transformation.rotate(Maths::PI / 2.0f, Vector3(0, 0, 1));
 	//transformation.scale(Vector3(2, 2, 2));
 	//transformation.translate(Vector3(3, 2, 5));
 	std::cout << transformation << std::endl;

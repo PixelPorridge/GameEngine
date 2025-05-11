@@ -20,23 +20,23 @@ void Transformation::translate(const Vector3& translation) {
 void Transformation::rotate(float angle, const Vector3& axis) {
 	Vector3 axis_normalised = axis.normalised();
 
-	float cos_theta = cos(angle);
-	float sin_theta = sin(angle);
+	float sin_theta = Maths::sin(angle);
+	float cos_theta = Maths::cos(angle);
 
 	Transformation rotation;
 
 	// Formula from https://learnopengl.com/Getting-started/Transformations
-	rotation.x.x = cos_theta + pow(axis_normalised.x, 2) * (1 - cos_theta);
-	rotation.x.y = axis_normalised.y * axis_normalised.x * (1 - cos_theta) + axis_normalised.z * sin_theta;
-	rotation.x.z = axis_normalised.z * axis_normalised.x * (1 - cos_theta) - axis_normalised.y * sin_theta;
+	rotation.x.x = Maths::zero_if_almost(cos_theta + Maths::pow(axis_normalised.x, 2.0f) * (1 - cos_theta));
+	rotation.x.y = Maths::zero_if_almost(axis_normalised.y * axis_normalised.x * (1 - cos_theta) + axis_normalised.z * sin_theta);
+	rotation.x.z = Maths::zero_if_almost(axis_normalised.z * axis_normalised.x * (1 - cos_theta) - axis_normalised.y * sin_theta);
 
-	rotation.y.x = axis_normalised.x * axis_normalised.y * (1 - cos_theta) - axis_normalised.z * sin_theta;
-	rotation.y.y = cos_theta + pow(axis_normalised.y, 2) * (1 - cos_theta);
-	rotation.y.z = axis_normalised.z * axis_normalised.y * (1 - cos_theta) + axis_normalised.x * sin_theta;
+	rotation.y.x = Maths::zero_if_almost(axis_normalised.x * axis_normalised.y * (1 - cos_theta) - axis_normalised.z * sin_theta);
+	rotation.y.y = Maths::zero_if_almost(cos_theta + Maths::pow(axis_normalised.y, 2.0f) * (1 - cos_theta));
+	rotation.y.z = Maths::zero_if_almost(axis_normalised.z * axis_normalised.y * (1 - cos_theta) + axis_normalised.x * sin_theta);
 
-	rotation.z.x = axis_normalised.x * axis_normalised.z * (1 - cos_theta) + axis_normalised.y * sin_theta;
-	rotation.z.y = axis_normalised.y * axis_normalised.z * (1 - cos_theta) - axis_normalised.x * sin_theta;
-	rotation.z.z = cos_theta + pow(axis_normalised.z, 2) * (1 - cos_theta);
+	rotation.z.x = Maths::zero_if_almost(axis_normalised.x * axis_normalised.z * (1 - cos_theta) + axis_normalised.y * sin_theta);
+	rotation.z.y = Maths::zero_if_almost(axis_normalised.y * axis_normalised.z * (1 - cos_theta) - axis_normalised.x * sin_theta);
+	rotation.z.z = Maths::zero_if_almost(cos_theta + Maths::pow(axis_normalised.z, 2.0f) * (1 - cos_theta));
 
 	Transformation new_transformation = (*this) * rotation;
 

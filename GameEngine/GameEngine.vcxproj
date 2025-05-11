@@ -87,6 +87,7 @@
     <ClInclude Include="external\include\KHR\khrplatform.h" />
     <ClInclude Include="external\include\stb\stb_image.h" />
     <ClInclude Include="src\main.h" />
+    <ClInclude Include="src\maths\maths.h" />
     <ClInclude Include="src\maths\transformation.h" />
     <ClInclude Include="src\maths\vector2.h" />
     <ClInclude Include="src\maths\vector3.h" />

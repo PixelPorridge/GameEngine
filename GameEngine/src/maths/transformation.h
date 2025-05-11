@@ -1,10 +1,10 @@
 #pragma once
 
-#include <cmath>
-#include <iostream>
-
-#include "vector4.h"
+#include "maths.h"
 #include "vector3.h"
+#include "vector4.h"
+
+#include <iostream>
 
 class Transformation {
 public:
@@ -12,7 +12,7 @@ public:
 		struct { Vector4 x, y, z, w; };
 		Vector4 columns[4];
 	};
-
+	
 	Transformation() : x(1, 0, 0, 0), y(0, 1, 0, 0), z(0, 0, 1, 0), w(0, 0, 0, 1) {}
 
 	void translate(const Vector3& translation);

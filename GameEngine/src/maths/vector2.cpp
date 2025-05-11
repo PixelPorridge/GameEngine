@@ -8,7 +8,7 @@
 */
 
 float Vector2::length() const {
-	return std::sqrt(x * x + y * y);
+	return Maths::sqrt(x * x + y * y);
 }
 
 float Vector2::length_squared() const {
@@ -16,14 +16,14 @@ float Vector2::length_squared() const {
 }
 
 void Vector2::normalise() {
-	float length = std::sqrt(x * x + y * y);
+	float length = Maths::sqrt(x * x + y * y);
 
 	x /= length;
 	y /= length;
 }
 
 Vector2 Vector2::normalised() const {
-	float length = std::sqrt(x * x + y * y);
+	float length = Maths::sqrt(x * x + y * y);
 
 	return Vector2(x / length, y / length);
 }

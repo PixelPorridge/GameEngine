@@ -15,6 +15,7 @@
 #include "opengl/texture.h"
 #include "maths/transformation.h"
 #include "maths/vector3.h"
+#include "maths/maths.h"
 
 void process_input(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
