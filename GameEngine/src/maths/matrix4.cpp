@@ -3,7 +3,7 @@
 /*
 *	Matrix4
 * 
-*	Represents a 4x4 transformation matrix.
+*	Represents a 4x4 matrix.
 *	Stored in column-major order.
 *	E.g.
 *		     [0] [1] [2] [3]
@@ -13,8 +13,26 @@
 *	[i][3]	| 0 | 0 | 0 | 1 |
 */
 
+void Matrix4::set_identity() {
+	x = Vector4(1, 0, 0, 0);
+	y = Vector4(0, 1, 0, 0);
+	z = Vector4(0, 0, 1, 0);
+	w = Vector4(0, 0, 0, 1);
+}
+
 void Matrix4::translate(const Vector3& translation) {
-	w += x * translation.x + y * translation.y + z * translation.z;
+	Matrix4 translate_matrix = identity();
+
+	translate_matrix.w.x = translation.x;
+	translate_matrix.w.y = translation.y;
+	translate_matrix.w.z = translation.z;
+
+	Matrix4 new_matrix = *this * translate_matrix;
+
+	x = new_matrix.x;
+	y = new_matrix.y;
+	z = new_matrix.z;
+	w = new_matrix.w;
 }
 
 void Matrix4::rotate(float angle, const Vector3& axis) {
@@ -23,22 +41,22 @@ void Matrix4::rotate(float angle, const Vector3& axis) {
 	float sin_theta = Maths::sin(angle);
 	float cos_theta = Maths::cos(angle);
 
-	Matrix4 rotation;
+	Matrix4 rotate_matrix = identity();
 
-	// Formula from https://learnopengl.com/Getting-started/Transformations
-	rotation.x.x = Maths::zero_if_almost(cos_theta + Maths::pow(axis_normalised.x, 2.0f) * (1 - cos_theta));
-	rotation.x.y = Maths::zero_if_almost(axis_normalised.y * axis_normalised.x * (1 - cos_theta) + axis_normalised.z * sin_theta);
-	rotation.x.z = Maths::zero_if_almost(axis_normalised.z * axis_normalised.x * (1 - cos_theta) - axis_normalised.y * sin_theta);
+	// Formula from https://www.songho.ca/opengl/gl_rotate.html
+	rotate_matrix.x.x = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.x + cos_theta);
+	rotate_matrix.x.y = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.y + sin_theta * axis_normalised.z);
+	rotate_matrix.x.z = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.z - sin_theta * axis_normalised.y);
 
-	rotation.y.x = Maths::zero_if_almost(axis_normalised.x * axis_normalised.y * (1 - cos_theta) - axis_normalised.z * sin_theta);
-	rotation.y.y = Maths::zero_if_almost(cos_theta + Maths::pow(axis_normalised.y, 2.0f) * (1 - cos_theta));
-	rotation.y.z = Maths::zero_if_almost(axis_normalised.z * axis_normalised.y * (1 - cos_theta) + axis_normalised.x * sin_theta);
+	rotate_matrix.y.x = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.y * axis_normalised.x - sin_theta * axis_normalised.z);
+	rotate_matrix.y.y = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.y * axis_normalised.y + cos_theta);
+	rotate_matrix.y.z = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.y * axis_normalised.z + sin_theta * axis_normalised.x);
 
-	rotation.z.x = Maths::zero_if_almost(axis_normalised.x * axis_normalised.z * (1 - cos_theta) + axis_normalised.y * sin_theta);
-	rotation.z.y = Maths::zero_if_almost(axis_normalised.y * axis_normalised.z * (1 - cos_theta) - axis_normalised.x * sin_theta);
-	rotation.z.z = Maths::zero_if_almost(cos_theta + Maths::pow(axis_normalised.z, 2.0f) * (1 - cos_theta));
+	rotate_matrix.z.x = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.z * axis_normalised.x + sin_theta * axis_normalised.y);
+	rotate_matrix.z.y = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.z * axis_normalised.y - sin_theta * axis_normalised.x);
+	rotate_matrix.z.z = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.z * axis_normalised.z + cos_theta);
 
-	Matrix4 new_matrix = (*this) * rotation;
+	Matrix4 new_matrix = *this * rotate_matrix;
 
 	x = new_matrix.x;
 	y = new_matrix.y;
@@ -47,9 +65,18 @@ void Matrix4::rotate(float angle, const Vector3& axis) {
 }
 
 void Matrix4::scale(const Vector3& factor) {
-	x *= factor.x;
-	y *= factor.y;
-	z *= factor.z;
+	Matrix4 scale_matrix = identity();
+
+	scale_matrix.x.x = factor.x;
+	scale_matrix.y.y = factor.y;
+	scale_matrix.z.z = factor.z;
+
+	Matrix4 new_matrix = *this * scale_matrix;
+
+	x = new_matrix.x;
+	y = new_matrix.y;
+	z = new_matrix.z;
+	w = new_matrix.w;
 }
 
 const float* Matrix4::get_pointer() const {

@@ -68,7 +68,7 @@ int main() {
 		glClearColor(0.25f, 0.4f, 0.9f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		Matrix4 transform;
+		Matrix4 transform = Matrix4::identity();
 		transform.translate(Vector3(0.5f, -0.5f, 0.0f));
 		transform.rotate((float)glfwGetTime(), Vector3(0, 0, 1));
 
