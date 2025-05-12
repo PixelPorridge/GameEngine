@@ -27,15 +27,11 @@ void Matrix4::translate(const Vector3& translation) {
 	translate_matrix.w.y = translation.y;
 	translate_matrix.w.z = translation.z;
 
-	Matrix4 new_matrix = *this * translate_matrix;
-
-	x = new_matrix.x;
-	y = new_matrix.y;
-	z = new_matrix.z;
-	w = new_matrix.w;
+	set_matrix(*this * translate_matrix);
 }
 
 void Matrix4::rotate(float angle, const Vector3& axis) {
+	// Formula from https://www.songho.ca/opengl/gl_rotate.html
 	Vector3 axis_normalised = axis.normalised();
 
 	float sin_theta = Maths::sin(angle);
@@ -43,7 +39,6 @@ void Matrix4::rotate(float angle, const Vector3& axis) {
 
 	Matrix4 rotate_matrix = identity();
 
-	// Formula from https://www.songho.ca/opengl/gl_rotate.html
 	rotate_matrix.x.x = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.x + cos_theta);
 	rotate_matrix.x.y = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.y + sin_theta * axis_normalised.z);
 	rotate_matrix.x.z = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.z - sin_theta * axis_normalised.y);
@@ -56,12 +51,7 @@ void Matrix4::rotate(float angle, const Vector3& axis) {
 	rotate_matrix.z.y = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.z * axis_normalised.y - sin_theta * axis_normalised.x);
 	rotate_matrix.z.z = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.z * axis_normalised.z + cos_theta);
 
-	Matrix4 new_matrix = *this * rotate_matrix;
-
-	x = new_matrix.x;
-	y = new_matrix.y;
-	z = new_matrix.z;
-	w = new_matrix.w;
+	set_matrix(*this * rotate_matrix);
 }
 
 void Matrix4::scale(const Vector3& factor) {
@@ -71,12 +61,79 @@ void Matrix4::scale(const Vector3& factor) {
 	scale_matrix.y.y = factor.y;
 	scale_matrix.z.z = factor.z;
 
-	Matrix4 new_matrix = *this * scale_matrix;
+	set_matrix(*this * scale_matrix);
+}
 
-	x = new_matrix.x;
-	y = new_matrix.y;
-	z = new_matrix.z;
-	w = new_matrix.w;
+void Matrix4::object_look_at(const Vector3& target) {
+	// Formula from https://www.songho.ca/opengl/gl_lookattoaxes.html
+	Vector3 position(w.x, w.y, w.z);
+	Vector3 left, up, forward;
+
+	forward = target - position;
+	forward.normalise();
+
+	if (Maths::is_almost_zero(Maths::abs(forward.x)) && Maths::is_almost_zero(Maths::abs(forward.z))) {
+		if (forward.y > 0) {
+			up = Vector3(0, 0, -1);
+		} else {
+			up = Vector3(0, 0, 1);
+		}
+	} else {
+		up = Vector3(0, 1, 0);
+	}
+
+	left = up.cross(forward);
+	left.normalise();
+
+	up = forward.cross(left);
+
+	Matrix4 object_look_at_matrix = identity();
+
+	object_look_at_matrix.x.x = left.x;
+	object_look_at_matrix.x.y = left.y;
+	object_look_at_matrix.x.z = left.z;
+
+	object_look_at_matrix.y.x = up.x;
+	object_look_at_matrix.y.y = up.y;
+	object_look_at_matrix.y.z = up.z;
+
+	object_look_at_matrix.z.x = forward.x;
+	object_look_at_matrix.z.y = forward.y;
+	object_look_at_matrix.z.z = forward.z;
+
+	set_matrix(*this * object_look_at_matrix);
+}
+
+void Matrix4::camera_look_at(const Vector3& target) {
+	// Formula from https://www.songho.ca/opengl/gl_camera.html
+	Vector3 position(w.x, w.y, w.z);
+	Vector3 left, up, forward;
+
+	forward = position - target;
+	forward.normalise();
+
+	up = Vector3(0, 1, 0);
+
+	left = up.cross(forward);
+	left.normalise();
+
+	up = forward.cross(left);
+
+	Matrix4 camera_look_at_matrix = identity();
+
+	camera_look_at_matrix.x.x = left.x;
+	camera_look_at_matrix.x.y = up.x;
+	camera_look_at_matrix.x.z = forward.x;
+
+	camera_look_at_matrix.y.x = left.y;
+	camera_look_at_matrix.y.y = up.y;
+	camera_look_at_matrix.y.z = forward.y;
+
+	camera_look_at_matrix.z.x = left.z;
+	camera_look_at_matrix.z.y = up.z;
+	camera_look_at_matrix.z.z = forward.z;
+
+	set_matrix(*this * camera_look_at_matrix);
 }
 
 const float* Matrix4::get_pointer() const {
@@ -109,29 +166,8 @@ Matrix4 Matrix4::operator*(const Matrix4& other) const {
 	return new_matrix;
 }
 
-Vector4 Matrix4::operator*(const Vector4& vector) const {
-	Vector4 new_vector;
-
-	for (int i = 0; i < 4; i++) {
-		float value = 0;
-
-		for (int j = 0; j < 4; j++) {
-			value += columns[j][i] * vector[j];
-		}
-
-		new_vector[i] = value;
-	}
-
-	return new_vector;
-}
-
 void Matrix4::operator*=(const Matrix4& other) {
-	Matrix4 new_matrix = *this * other;
-
-	x = new_matrix.x;
-	y = new_matrix.y;
-	z = new_matrix.z;
-	w = new_matrix.w;
+	set_matrix(*this * other);
 }
 
 bool Matrix4::operator==(const Matrix4& other) const {
@@ -156,4 +192,11 @@ bool Matrix4::operator!=(const Matrix4& other) const {
 	}
 
 	return false;
+}
+
+void Matrix4::set_matrix(const Matrix4& matrix) {
+	x = matrix.x;
+	y = matrix.y;
+	z = matrix.z;
+	w = matrix.w;
 }

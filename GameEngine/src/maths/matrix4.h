@@ -53,15 +53,20 @@ public:
 	void rotate(float angle, const Vector3& axis);
 	void scale(const Vector3& factor);
 
+	void object_look_at(const Vector3& target);
+	void camera_look_at(const Vector3& target);
+
 	const float* get_pointer() const;
 
 	const Vector4& operator[](int index) const;
 	Vector4& operator[](int index);
 
 	Matrix4 operator*(const Matrix4& other) const;
-	Vector4 operator*(const Vector4& vector) const;
 	void operator*=(const Matrix4& other);
 
 	bool operator==(const Matrix4& other) const;
 	bool operator!=(const Matrix4& other) const;
+
+private:
+	void set_matrix(const Matrix4& matrix);
 };

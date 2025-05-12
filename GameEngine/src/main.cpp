@@ -29,55 +29,11 @@ int main() {
 	stbi_set_flip_vertically_on_load(true);
 
 	std::vector<float> vertices = {
-		// Positions         // Texture coords
-		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f,  // Bottom left
-		-0.5f,  0.5f, 0.0f,  0.0f, 1.0f,  // Top left
-		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f,  // Bottom right
-		 0.5f,  0.5f, 0.0f,  1.0f, 1.0f,  // Top right
-	};
-
-	std::vector<float> vertices2 = {
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+		// Positions         // Colours         // Texture coords
+		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f,  // Bottom left
+		-0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,  // Top left
+		 0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f,  // Bottom right
+		 0.5f,  0.5f, 0.0f,  1.0f, 1.0f, 0.0f,  1.0f, 1.0f,  // Top right
 	};
 
 	std::vector<int> indices = {
@@ -85,8 +41,9 @@ int main() {
 		1, 2, 3
 	};
 
-	VertexBuffer vertex_buffer(vertices2);
+	VertexBuffer vertex_buffer(vertices);
 	VertexBufferLayout vertex_buffer_layout;
+	vertex_buffer_layout.push(3);
 	vertex_buffer_layout.push(3);
 	vertex_buffer_layout.push(2);
 
@@ -94,7 +51,7 @@ int main() {
 
 	VertexArray vertex_array;
 	vertex_array.link_vertex_buffer(vertex_buffer, vertex_buffer_layout);
-	//vertex_array.link_element_buffer(element_buffer);
+	vertex_array.link_element_buffer(element_buffer);
 
 	Texture container_texture("assets/textures/container.jpg");
 	container_texture.bind(0);
@@ -114,22 +71,13 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		Matrix4 model = Matrix4::identity();
-		model.rotate((float)glfwGetTime() * Maths::degrees_to_radians(50), Vector3(0.5f, 1, 0));
-
-		Matrix4 view = Matrix4::identity();
-		view.translate(Vector3(0, 0, -3));
-		view.rotate((float)glfwGetTime() * Maths::degrees_to_radians(-180), Vector3(0, 0, 1));
-
-		Matrix4 projection = Matrix4::perspective(Maths::degrees_to_radians(45), 800.0f / 600.0f, 0.1f, 100.0f);
+		model.rotate((float)glfwGetTime() * Maths::degrees_to_radians(50), Vector3(0, 0, 1));
 
 		program.set_mat4("model", model);
-		program.set_mat4("view", view);
-		program.set_mat4("projection", projection);
 
 		program.use();
 		vertex_array.bind();
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		
 		glfwSwapBuffers(window);
 	}
