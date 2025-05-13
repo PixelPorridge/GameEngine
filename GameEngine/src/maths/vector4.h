@@ -1,5 +1,8 @@
 #pragma once
 
+#include "vector2.h"
+#include "vector3.h"
+
 class Vector4 {
 public:
 	union {
@@ -9,6 +12,8 @@ public:
 	
 	Vector4() : x(0), y(0), z(0), w(0) {}
 	Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+	Vector4(const Vector2& xy, float z, float w) : x(xy.x), y(xy.y), z(z), w(w) {}
+	Vector4(const Vector3& xyz, float w) : x(xyz.x), y(xyz.y), z(xyz.z), w(w) {}
 
 	const float& operator[](int index) const;
 	float& operator[](int index);

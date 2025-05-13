@@ -13,20 +13,19 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{435e7caf-eb94-4245-a9e9-762246d378d9}</ProjectGuid>
-    <RootNamespace>GameEngine</RootNamespace>
+    <ProjectGuid>{dae657bc-b701-4dab-a57d-4833f549c684}</ProjectGuid>
+    <RootNamespace>Game</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>GameEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -45,20 +44,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)external\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)external\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\$(ProjectName)\int\$(Configuration)\</IntDir>
-    <AllProjectIncludesArePublic>false</AllProjectIncludesArePublic>
-    <PublicIncludeDirectories>$(ProjectDir)external\include;$(ProjectDir)src;</PublicIncludeDirectories>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\$(ProjectName)\int\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)external\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)external\lib;$(LibraryPath)</LibraryPath>
-    <AllProjectIncludesArePublic>false</AllProjectIncludesArePublic>
-    <PublicIncludeDirectories>$(ProjectDir)external\include;$(ProjectDir)src;</PublicIncludeDirectories>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <VcpkgUseStatic>false</VcpkgUseStatic>
@@ -73,14 +66,15 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)assets" "$(OutDir)assets" /e /i /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -91,61 +85,37 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)assets" "$(OutDir)assets" /e /i /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="external\include\glad\glad.h" />
-    <ClInclude Include="external\include\GLFW\glfw3.h" />
-    <ClInclude Include="external\include\GLFW\glfw3native.h" />
-    <ClInclude Include="external\include\KHR\khrplatform.h" />
-    <ClInclude Include="external\include\stb\stb_image.h" />
-    <ClInclude Include="src\objects\camera.h" />
-    <ClInclude Include="src\systems\renderer.h" />
-    <ClInclude Include="src\components\transform.h" />
-    <ClInclude Include="src\engine.h" />
-    <ClInclude Include="src\maths\maths.h" />
-    <ClInclude Include="src\maths\matrix4.h" />
-    <ClInclude Include="src\maths\vector2.h" />
-    <ClInclude Include="src\maths\vector3.h" />
-    <ClInclude Include="src\maths\vector4.h" />
-    <ClInclude Include="src\opengl\element_buffer.h" />
-    <ClInclude Include="src\opengl\program.h" />
-    <ClInclude Include="src\opengl\shader.h" />
-    <ClInclude Include="src\opengl\texture.h" />
-    <ClInclude Include="src\opengl\vertex_array.h" />
-    <ClInclude Include="src\opengl\vertex_buffer.h" />
-    <ClInclude Include="src\opengl\vertex_buffer_layout.h" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="external\src\glad.c" />
-    <ClCompile Include="external\src\stb_image.cpp" />
-    <ClCompile Include="src\objects\camera.cpp" />
-    <ClCompile Include="src\systems\renderer.cpp" />
-    <ClCompile Include="src\components\transform.cpp" />
-    <ClCompile Include="src\engine.cpp" />
-    <ClCompile Include="src\maths\matrix4.cpp" />
-    <ClCompile Include="src\maths\vector2.cpp" />
-    <ClCompile Include="src\maths\vector3.cpp" />
-    <ClCompile Include="src\maths\vector4.cpp" />
-    <ClCompile Include="src\opengl\element_buffer.cpp" />
-    <ClCompile Include="src\opengl\program.cpp" />
-    <ClCompile Include="src\opengl\shader.cpp" />
-    <ClCompile Include="src\opengl\texture.cpp" />
-    <ClCompile Include="src\opengl\vertex_array.cpp" />
-    <ClCompile Include="src\opengl\vertex_buffer.cpp" />
-    <ClCompile Include="src\opengl\vertex_buffer_layout.cpp" />
+    <ClInclude Include="src\main.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="external\lib\glfw3.lib" />
+    <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
+      <Project>{435e7caf-eb94-4245-a9e9-762246d378d9}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\default.frag" />
+    <None Include="assets\shaders\default.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\awesome_face.png" />
+    <Image Include="assets\textures\container.jpg" />
+    <Image Include="assets\textures\jump_king_gold_cap.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

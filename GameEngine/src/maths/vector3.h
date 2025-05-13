@@ -1,6 +1,7 @@
 #pragma once
 
 #include "maths.h"
+#include "vector2.h"
 
 class Vector3 {
 public:
@@ -11,6 +12,7 @@ public:
 
 	Vector3() : x(0), y(0), z(0) {}
 	Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
+	Vector3(const Vector2& xy, float z) : x(xy.x), y(xy.y), z(z) {}
 
 	float length() const;
 	float length_squared() const;
