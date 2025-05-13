@@ -104,7 +104,7 @@
     <ClInclude Include="src\main.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
+    <ProjectReference Include="..\Engine\Engine.vcxproj">
       <Project>{435e7caf-eb94-4245-a9e9-762246d378d9}</Project>
     </ProjectReference>
   </ItemGroup>
