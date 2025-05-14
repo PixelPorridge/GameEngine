@@ -26,33 +26,34 @@ Engine::Engine(int width, int height, const std::string& title) {
 void Engine::run() {
 	while (!glfwWindowShouldClose(window)) {
 		float current_frame = (float)glfwGetTime();
-		float delta = current_frame - last_frame;
+		delta = current_frame - last_frame;
 		last_frame = current_frame;
 
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		if (update_callback != nullptr) {
-			update_callback(delta);
-		}
+		glfwPollEvents();
 
-		if (render_callback != nullptr) {
-			render_callback();
+		if (update_callback != nullptr) {
+			update_callback();
 		}
 
 		glfwSwapBuffers(window);
-		glfwPollEvents();
 	}
 
 	glfwTerminate();
 }
 
-void Engine::set_update_callback(std::function<void(float)> callback) {
-	update_callback = callback;
+float Engine::get_time() const {
+	return (float)glfwGetTime();
 }
 
-void Engine::set_render_callback(std::function<void()> callback) {
-	render_callback = callback;
+float Engine::get_delta() const {
+	return delta;
+}
+
+void Engine::set_update_callback(std::function<void()> callback) {
+	update_callback = callback;
 }
 
 void Engine::on_framebuffer_resized(GLFWwindow* window, int width, int height) {
