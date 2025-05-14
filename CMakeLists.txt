@@ -3,7 +3,9 @@ project(engine)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(SOURCES
+add_library(${PROJECT_NAME} STATIC)
+
+target_sources(${PROJECT_NAME} PRIVATE
     src/engine.cpp
     src/engine.h
 
@@ -39,16 +41,24 @@ set(SOURCES
     src/opengl/vertex_buffer.h
 )
 
-add_library(${PROJECT_NAME} ${SOURCES})
-
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-        $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    PRIVATE
+target_include_directories(${PROJECT_NAME} PUBLIC
+    src/
+    external/
 )
 
-target_link_libraries(${PROJECT_NAME}
-    PUBLIC
-    PRIVATE
-)
+# Glad
+add_subdirectory(external/glad)
+target_link_libraries(${PROJECT_NAME} PUBLIC glad)
+
+# GLFW
+set(GLFW_BUILD_EXAMPLES OFF)
+set(GLFW_BUILD_TESTS OFF)
+set(GLFW_BUILD_DOCS OFF)
+set(GLFW_INSTALL OFF)
+
+add_subdirectory(external/glfw)
+target_link_libraries(${PROJECT_NAME} PUBLIC glfw)
+
+# stb
+add_subdirectory(external/stb)
+target_link_libraries(${PROJECT_NAME} PUBLIC stb)
