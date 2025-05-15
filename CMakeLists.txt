@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.31)
 project(engine)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -41,10 +41,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     src/opengl/vertex_buffer.h
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC
-    src/
-    external/
-)
+target_include_directories(${PROJECT_NAME} PUBLIC src/)
 
 # Glad
 add_subdirectory(external/glad)

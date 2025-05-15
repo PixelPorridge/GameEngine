@@ -1,10 +1,10 @@
 #pragma once
 
-#include <glad/glad.h>
-
 #include "vertex_buffer.h"
 #include "element_buffer.h"
 #include "vertex_buffer_layout.h"
+
+#include <glad/glad.h>
 
 class VertexArray {
 private:
