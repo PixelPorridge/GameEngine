@@ -5,6 +5,8 @@
 #include "stb/stb_image.h"
 #include "maths/vector2.h"
 #include "maths/colour.h"
+#include "maths/matrix4.h"
+#include "utils/debug.h"
 
 #include <vector>
 #include <string>
@@ -12,7 +14,7 @@
 
 class Window {
 private:
-	GLFWwindow* window;
+	GLFWwindow* glfw_window;
 
 	float delta = 0;
 	float last_frame = 0;
@@ -36,11 +38,13 @@ public:
 	void set_title(const std::string& title);
 	void set_icon(const std::vector<std::string>& paths);
 	void set_resizable(bool resizable);
-	void set_decorated(bool decorated);
+	void set_borderless(bool borderless);
 	void set_background_colour(const Colour& colour);
 
 	void set_update_callback(std::function<void()> callback);
 
 private:
-	static void on_framebuffer_resized(GLFWwindow* window, int width, int height);
+	static inline void on_framebuffer_resized(GLFWwindow* window, int width, int height) {
+		glViewport(0, 0, width, height);
+	}
 };

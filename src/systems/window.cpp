@@ -7,10 +7,10 @@ Window::Window(int width, int height, const std::string& title) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
-	glfwMakeContextCurrent(window);
+	glfw_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+	glfwMakeContextCurrent(glfw_window);
 
-	glfwSetFramebufferSizeCallback(window, on_framebuffer_resized);
+	glfwSetFramebufferSizeCallback(glfw_window, on_framebuffer_resized);
 
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
@@ -21,7 +21,7 @@ Window::Window(int width, int height, const std::string& title) {
 }
 
 void Window::run() {
-	while (!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(glfw_window)) {
 		float current_frame = (float)glfwGetTime();
 		delta = current_frame - last_frame;
 		last_frame = current_frame;
@@ -35,14 +35,14 @@ void Window::run() {
 			update_callback();
 		}
 
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(glfw_window);
 	}
 
 	glfwTerminate();
 }
 
 void Window::close() {
-	glfwSetWindowShouldClose(window, true);
+	glfwSetWindowShouldClose(glfw_window, true);
 }
 
 float Window::get_time() const {
@@ -55,30 +55,27 @@ float Window::get_delta() const {
 
 Vector2 Window::get_size() const {
 	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
+	glfwGetFramebufferSize(glfw_window, &width, &height);
 
 	return Vector2(width, height);
 }
 
 Vector2 Window::get_mouse_position() const {
 	float scale_x, scale_y;
-	glfwGetWindowContentScale(window, &scale_x, &scale_y);
+	glfwGetWindowContentScale(glfw_window, &scale_x, &scale_y);
 
 	double mouse_x, mouse_y;
-	glfwGetCursorPos(window, &mouse_x, &mouse_y);
+	glfwGetCursorPos(glfw_window, &mouse_x, &mouse_y);
 
 	return Vector2(mouse_x * scale_x, mouse_y * scale_y);
 }
 
 void Window::set_size(int width, int height) {
-	float scale_x, scale_y;
-	glfwGetWindowContentScale(window, &scale_x, &scale_y);
-
-	glfwSetWindowSize(window, width / scale_x, height / scale_y);
+	glfwSetWindowSize(glfw_window, width, height);
 }
 
 void Window::set_title(const std::string& title) {
-	glfwSetWindowTitle(window, title.c_str());
+	glfwSetWindowTitle(glfw_window, title.c_str());
 }
 
 void Window::set_icon(const std::vector<std::string>& paths) {
@@ -92,7 +89,7 @@ void Window::set_icon(const std::vector<std::string>& paths) {
 	}
 
 	stbi_set_flip_vertically_on_load(true);
-	glfwSetWindowIcon(window, images.size(), &images[0]);
+	glfwSetWindowIcon(glfw_window, images.size(), &images[0]);
 
 	for (const GLFWimage& image : images) {
 		stbi_image_free(image.pixels);
@@ -100,11 +97,11 @@ void Window::set_icon(const std::vector<std::string>& paths) {
 }
 
 void Window::set_resizable(bool resizable) {
-	glfwSetWindowAttrib(window, GLFW_RESIZABLE, resizable);
+	glfwSetWindowAttrib(glfw_window, GLFW_RESIZABLE, resizable);
 }
 
-void Window::set_decorated(bool decorated) {
-	glfwSetWindowAttrib(window, GLFW_DECORATED, decorated);
+void Window::set_borderless(bool borderless) {
+	glfwSetWindowAttrib(glfw_window, GLFW_DECORATED, borderless);
 }
 
 void Window::set_background_colour(const Colour& colour) {
@@ -113,8 +110,4 @@ void Window::set_background_colour(const Colour& colour) {
 
 void Window::set_update_callback(std::function<void()> callback) {
 	update_callback = callback;
-}
-
-void Window::on_framebuffer_resized(GLFWwindow* window, int width, int height) {
-	glViewport(0, 0, width, height);
 }

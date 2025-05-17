@@ -42,6 +42,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     src/systems/window.h
     src/systems/renderer.cpp
     src/systems/renderer.h
+
+    src/utils/debug.h
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)
