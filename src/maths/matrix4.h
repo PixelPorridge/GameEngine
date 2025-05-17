@@ -3,8 +3,10 @@
 #include "maths.h"
 #include "vector3.h"
 #include "vector4.h"
-#include "objects/camera.h"
+#include "components/camera.h"
 #include "components/transform.h"
+
+#include <cmath>
 
 class Matrix4 {
 public:
@@ -27,7 +29,7 @@ public:
 
 	static inline Matrix4 perspective(float fov, float aspect_ratio, float near, float far) {
 		// Formula from https://www.songho.ca/opengl/gl_projectionmatrix.html
-		float tangent = Maths::tan(fov / 2);
+		float tangent = std::tan(fov / 2);
 		float top = near * tangent;
 		float right = top * aspect_ratio;
 

@@ -6,12 +6,13 @@ set(CMAKE_CXX_STANDARD 20)
 add_library(${PROJECT_NAME} STATIC)
 
 target_sources(${PROJECT_NAME} PRIVATE
-    src/engine.cpp
-    src/engine.h
-
+    src/components/camera.cpp
+    src/components/camera.h
     src/components/transform.cpp
     src/components/transform.h
 
+    src/maths/colour.cpp
+    src/maths/colour.h
     src/maths/maths.h
     src/maths/matrix4.cpp
     src/maths/matrix4.h
@@ -21,9 +22,6 @@ target_sources(${PROJECT_NAME} PRIVATE
     src/maths/vector3.h
     src/maths/vector4.cpp
     src/maths/vector4.h
-
-    src/objects/camera.cpp
-    src/objects/camera.h
 
     src/opengl/element_buffer.cpp
     src/opengl/element_buffer.h
@@ -39,6 +37,11 @@ target_sources(${PROJECT_NAME} PRIVATE
     src/opengl/vertex_buffer_layout.h
     src/opengl/vertex_buffer.cpp
     src/opengl/vertex_buffer.h
+
+    src/systems/window.cpp
+    src/systems/window.h
+    src/systems/renderer.cpp
+    src/systems/renderer.h
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC src/)

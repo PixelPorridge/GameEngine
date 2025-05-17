@@ -34,22 +34,22 @@ void Matrix4::rotate(float angle, const Vector3& axis) {
 	// Formula from https://www.songho.ca/opengl/gl_rotate.html
 	Vector3 axis_normalised = axis.normalised();
 
-	float sin_theta = Maths::sin(angle);
-	float cos_theta = Maths::cos(angle);
+	float sin_theta = std::sin(angle);
+	float cos_theta = std::cos(angle);
 
 	Matrix4 rotate_matrix = identity();
 
-	rotate_matrix.x.x = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.x + cos_theta);
-	rotate_matrix.x.y = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.y + sin_theta * axis_normalised.z);
-	rotate_matrix.x.z = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.z - sin_theta * axis_normalised.y);
+	rotate_matrix.x.x = zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.x + cos_theta);
+	rotate_matrix.x.y = zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.y + sin_theta * axis_normalised.z);
+	rotate_matrix.x.z = zero_if_almost((1 - cos_theta) * axis_normalised.x * axis_normalised.z - sin_theta * axis_normalised.y);
 
-	rotate_matrix.y.x = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.y * axis_normalised.x - sin_theta * axis_normalised.z);
-	rotate_matrix.y.y = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.y * axis_normalised.y + cos_theta);
-	rotate_matrix.y.z = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.y * axis_normalised.z + sin_theta * axis_normalised.x);
+	rotate_matrix.y.x = zero_if_almost((1 - cos_theta) * axis_normalised.y * axis_normalised.x - sin_theta * axis_normalised.z);
+	rotate_matrix.y.y = zero_if_almost((1 - cos_theta) * axis_normalised.y * axis_normalised.y + cos_theta);
+	rotate_matrix.y.z = zero_if_almost((1 - cos_theta) * axis_normalised.y * axis_normalised.z + sin_theta * axis_normalised.x);
 
-	rotate_matrix.z.x = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.z * axis_normalised.x + sin_theta * axis_normalised.y);
-	rotate_matrix.z.y = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.z * axis_normalised.y - sin_theta * axis_normalised.x);
-	rotate_matrix.z.z = Maths::zero_if_almost((1 - cos_theta) * axis_normalised.z * axis_normalised.z + cos_theta);
+	rotate_matrix.z.x = zero_if_almost((1 - cos_theta) * axis_normalised.z * axis_normalised.x + sin_theta * axis_normalised.y);
+	rotate_matrix.z.y = zero_if_almost((1 - cos_theta) * axis_normalised.z * axis_normalised.y - sin_theta * axis_normalised.x);
+	rotate_matrix.z.z = zero_if_almost((1 - cos_theta) * axis_normalised.z * axis_normalised.z + cos_theta);
 
 	set_matrix(*this * rotate_matrix);
 }
@@ -72,7 +72,7 @@ void Matrix4::object_look_at(const Vector3& target) {
 	forward = target - position;
 	forward.normalise();
 
-	if (Maths::is_almost_zero(Maths::abs(forward.x)) && Maths::is_almost_zero(Maths::abs(forward.z))) {
+	if (is_almost_zero(std::abs(forward.x)) && is_almost_zero(std::abs(forward.z))) {
 		if (forward.y > 0) {
 			up = Vector3(0, 0, -1);
 		} else {

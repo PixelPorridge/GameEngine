@@ -1,7 +1,8 @@
 #pragma once
 
-#include "maths.h"
 #include "vector2.h"
+
+#include <cmath>
 
 class Vector3 {
 public:

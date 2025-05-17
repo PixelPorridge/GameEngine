@@ -1,11 +1,12 @@
 #pragma once
 
-#include "maths.h"
+#include <cmath>
 
 class Vector2 {
 public:
 	union {
 		struct { float x, y; };
+		struct { float width, height; };
 		float axis[2];
 	};
 
