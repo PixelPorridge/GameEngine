@@ -16,8 +16,6 @@ Window::Window(int width, int height, const std::string& title) {
 
 	glViewport(0, 0, width, height);
 	glEnable(GL_DEPTH_TEST);
-
-	stbi_set_flip_vertically_on_load(true);
 }
 
 void Window::run() {

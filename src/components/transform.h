@@ -5,6 +5,6 @@
 class Transform {
 public:
 	Vector2 position;
-	float rotation;
-	Vector2 scale;
+	float rotation = 0;
+	Vector2 scale = Vector2(1, 1);
 };

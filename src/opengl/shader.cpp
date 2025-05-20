@@ -9,35 +9,56 @@
 *	Shaders are created by first providing the raw shader code as a string, then compiled.
 */
 
-static std::string read_file(const std::string& path) {
-	std::ifstream file(path);
+Shader Shader::from_path(const std::string& path) {
+	Shader shader;
 
+	std::ifstream file(path);
 	std::stringstream buffer;
 	buffer << file.rdbuf();
 
-	return buffer.str();
-}
-
-Shader::Shader(const std::string& path) {
-	std::string source = read_file(path);
+	std::string source = buffer.str();
 	const char* source_c = source.c_str();
 
 	std::string type = path.substr(path.find_last_of('.') + 1);
 
 	if (type == "vert") {
-		id = glCreateShader(GL_VERTEX_SHADER);
+		shader.id = glCreateShader(GL_VERTEX_SHADER);
 	} else if (type == "frag") {
-		id = glCreateShader(GL_FRAGMENT_SHADER);
+		shader.id = glCreateShader(GL_FRAGMENT_SHADER);
 	}
 
-	glShaderSource(id, 1, &source_c, nullptr);
-	glCompileShader(id);
+	glShaderSource(shader.id, 1, &source_c, nullptr);
+	glCompileShader(shader.id);
+
+	return shader;
+}
+
+Shader Shader::from_string_vertex(const std::string& source) {
+	Shader shader;
+	const char* source_c = source.c_str();
+
+	shader.id = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(shader.id, 1, &source_c, nullptr);
+	glCompileShader(shader.id);
+
+	return shader;
+}
+
+Shader Shader::from_string_fragment(const std::string& source) {
+	Shader shader;
+	const char* source_c = source.c_str();
+
+	shader.id = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(shader.id, 1, &source_c, nullptr);
+	glCompileShader(shader.id);
+
+	return shader;
 }
 
 Shader::~Shader() {
 	glDeleteShader(id);
 }
 
-const unsigned int Shader::get_id() const {
+unsigned int Shader::get_id() const {
 	return id;
 }

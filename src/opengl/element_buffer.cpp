@@ -17,6 +17,6 @@ ElementBuffer::~ElementBuffer() {
 	glDeleteBuffers(1, &id);
 }
 
-const unsigned int ElementBuffer::get_id() const {
+unsigned int ElementBuffer::get_id() const {
 	return id;
 }

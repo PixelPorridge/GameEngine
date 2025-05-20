@@ -17,5 +17,5 @@ public:
 	void push(int size);
 
 	const std::vector<VertexBufferAttribute>& get_attributes() const;
-	const int get_stride() const;
+	int get_stride() const;
 };

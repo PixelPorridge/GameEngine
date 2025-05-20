@@ -17,6 +17,6 @@ const std::vector<VertexBufferAttribute>& VertexBufferLayout::get_attributes() c
 	return attributes;
 }
 
-const int VertexBufferLayout::get_stride() const {
+int VertexBufferLayout::get_stride() const {
 	return stride;
 }

@@ -9,7 +9,7 @@
 */
 
 Texture::Texture(const std::string& path) {
-	int width, height, channels;
+	int channels;
 	unsigned char* pixels = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
 	glCreateTextures(GL_TEXTURE_2D, 1, &id);
@@ -34,8 +34,16 @@ Texture::~Texture() {
 	glDeleteTextures(1, &id);
 }
 
-const unsigned int Texture::get_id() const {
+unsigned int Texture::get_id() const {
 	return id;
+}
+
+int Texture::get_width() const {
+	return width;
+}
+
+int Texture::get_height() const {
+	return height;
 }
 
 void Texture::bind(int unit) const {

@@ -11,5 +11,5 @@ public:
 	ElementBuffer(const std::vector<int>& indices);
 	~ElementBuffer();
 
-	const unsigned int get_id() const;
+	unsigned int get_id() const;
 };

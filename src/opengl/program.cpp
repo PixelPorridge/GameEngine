@@ -21,7 +21,7 @@ Program::~Program() {
 	glDeleteProgram(id);
 }
 
-const unsigned int Program::get_id() const {
+unsigned int Program::get_id() const {
 	return id;
 }
 

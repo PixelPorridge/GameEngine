@@ -5,6 +5,6 @@
 class Camera {
 public:
 	Vector2 position;
-	float rotation;
-	float zoom;
+	float rotation = 0;
+	float zoom = 1;
 };

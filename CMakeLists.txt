@@ -6,11 +6,18 @@ set(CMAKE_CXX_STANDARD 20)
 add_library(${PROJECT_NAME} STATIC)
 
 target_sources(${PROJECT_NAME} PRIVATE
+    # Components
     src/components/camera.cpp
     src/components/camera.h
+    src/components/sprite.cpp
+    src/components/sprite.h
     src/components/transform.cpp
     src/components/transform.h
 
+    # Core
+    src/core/core.h
+
+    # Maths
     src/maths/colour.cpp
     src/maths/colour.h
     src/maths/maths.h
@@ -23,6 +30,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     src/maths/vector4.cpp
     src/maths/vector4.h
 
+    # OpenGL
     src/opengl/element_buffer.cpp
     src/opengl/element_buffer.h
     src/opengl/program.cpp
@@ -38,11 +46,13 @@ target_sources(${PROJECT_NAME} PRIVATE
     src/opengl/vertex_buffer.cpp
     src/opengl/vertex_buffer.h
 
+    # Systems
     src/systems/window.cpp
     src/systems/window.h
     src/systems/renderer.cpp
     src/systems/renderer.h
 
+    # Utils
     src/utils/debug.h
 )
 

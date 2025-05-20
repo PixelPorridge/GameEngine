@@ -19,6 +19,6 @@ VertexBuffer::~VertexBuffer() {
 	glDeleteBuffers(1, &id);
 }
 
-const unsigned int VertexBuffer::get_id() const {
+unsigned int VertexBuffer::get_id() const {
 	return id;
 }

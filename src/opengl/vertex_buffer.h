@@ -11,5 +11,5 @@ public:
 	VertexBuffer(const std::vector<float>& vertices);
 	~VertexBuffer();
 
-	const unsigned int get_id() const;
+	unsigned int get_id() const;
 };

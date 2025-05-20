@@ -14,7 +14,7 @@ public:
 	Program(const Shader& vertex, const Shader& fragment);
 	~Program();
 
-	const unsigned int get_id() const;
+	unsigned int get_id() const;
 	void use() const;
 
 	void set_mat4(const std::string& name, const Matrix4& matrix) const;

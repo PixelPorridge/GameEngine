@@ -16,7 +16,7 @@ VertexArray::~VertexArray() {
 	glDeleteVertexArrays(1, &id);
 }
 
-const unsigned int VertexArray::get_id() const {
+unsigned int VertexArray::get_id() const {
 	return id;
 }
 
