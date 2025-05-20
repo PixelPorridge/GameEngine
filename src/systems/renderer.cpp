@@ -40,15 +40,13 @@ void Renderer::render(const Window& window, const Camera& camera) {
 	Matrix4 projection = Matrix4::orthographic(0, window_size.width, window_size.height, 0, -10000, 10000);
 	Matrix4 view = Matrix4::identity();
 
-	view.translate(Vector3(
-		-camera.position.x + (camera.centered ? window_size.width / 2 : 0),
-		-camera.position.y + (camera.centered ? window_size.height / 2 : 0),
-		0
-	));
+	if (camera.centered) {
+		view.translate(Vector3(window_size.width / 2, window_size.height / 2, 0));
+	}
+
 	view.rotate(-camera.rotation, Vector3(0, 0, 1));
 	view.scale(Vector3(camera.zoom, 1));
-
-	view.translate(Vector3(-camera.offset, 0));
+	view.translate(Vector3(-camera.position - camera.offset, 0));
 
 	program->set_mat4("projection", projection);
 	program->set_mat4("view", view);

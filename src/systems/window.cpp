@@ -78,7 +78,6 @@ void Window::set_title(const std::string& title) {
 
 void Window::set_icon(const std::vector<std::string>& paths) {
 	std::vector<GLFWimage> images;
-	stbi_set_flip_vertically_on_load(false);
 
 	for (const std::string& path : paths) {
 		GLFWimage image;
@@ -86,7 +85,6 @@ void Window::set_icon(const std::vector<std::string>& paths) {
 		images.push_back(image);
 	}
 
-	stbi_set_flip_vertically_on_load(true);
 	glfwSetWindowIcon(glfw_window, images.size(), &images[0]);
 
 	for (const GLFWimage& image : images) {
