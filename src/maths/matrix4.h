@@ -51,26 +51,6 @@ public:
 		);
 	}
 
-	static inline Matrix4 view(const Camera& camera) {
-		Matrix4 matrix = identity();
-
-		matrix.translate(Vector3(-camera.position, 0));
-		matrix.rotate(-camera.rotation, Vector3(0, 0, 1));
-		matrix.scale(Vector3(camera.zoom, camera.zoom, 1));
-
-		return matrix;
-	}
-
-	static inline Matrix4 model(const Transform& transform) {
-		Matrix4 matrix = identity();
-
-		matrix.translate(Vector3(transform.position, 0));
-		matrix.rotate(transform.rotation, Vector3(0, 0, 1));
-		matrix.scale(Vector3(transform.scale.x, transform.scale.y, 1));
-
-		return matrix;
-	}
-
 	void set_identity();
 
 	void translate(const Vector3& translation);

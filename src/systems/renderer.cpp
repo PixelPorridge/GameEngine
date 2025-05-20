@@ -35,10 +35,20 @@ void Renderer::add(const Shared<Sprite>& sprite) {
 }
 
 void Renderer::render(const Window& window, const Camera& camera) {
-	Vector2 size = window.get_size();
+	Vector2 window_size = window.get_size();
 
-	Matrix4 projection = Matrix4::orthographic(0, size.width, size.height, 0, -10000, 10000);
-	Matrix4 view = Matrix4::view(camera);
+	Matrix4 projection = Matrix4::orthographic(0, window_size.width, window_size.height, 0, -10000, 10000);
+	Matrix4 view = Matrix4::identity();
+
+	view.translate(Vector3(
+		-camera.position.x + (camera.centered ? window_size.width / 2 : 0),
+		-camera.position.y + (camera.centered ? window_size.height / 2 : 0),
+		0
+	));
+	view.rotate(-camera.rotation, Vector3(0, 0, 1));
+	view.scale(Vector3(camera.zoom, 1));
+
+	view.translate(Vector3(-camera.offset, 0));
 
 	program->set_mat4("projection", projection);
 	program->set_mat4("view", view);
@@ -53,7 +63,6 @@ void Renderer::render(const Window& window, const Camera& camera) {
 
 		Matrix4 model = Matrix4::identity();
 		
-		// Regular transformations
 		model.translate(Vector3(sprite->transform.position, 0));
 		model.rotate(sprite->transform.rotation, Vector3(0, 0, 1));
 		model.scale(Vector3(
@@ -62,7 +71,6 @@ void Renderer::render(const Window& window, const Camera& camera) {
 			1
 		));
 
-		// Offset & centered translations
 		Vector2 offset(
 			sprite->offset.x / sprite->texture->get_width(),
 			sprite->offset.y / sprite->texture->get_height()
