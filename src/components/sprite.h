@@ -11,5 +11,8 @@ public:
 	Transform transform;
 	Unique<Texture> texture;
 
+	bool centered = true;
+	Vector2 offset;
+
 	Sprite(const std::string& path);
 };

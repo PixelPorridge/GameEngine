@@ -17,11 +17,7 @@ inline float radians_to_degrees(float radians) {
 }
 
 inline bool is_almost_zero(float value) {
-	if (std::abs(value) < EPSILON) {
-		return true;
-	}
-
-	return false;
+	return std::abs(value) < EPSILON;
 }
 
 inline float zero_if_almost(float value) {

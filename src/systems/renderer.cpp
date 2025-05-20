@@ -46,23 +46,15 @@ void Renderer::render(const Window& window, const Camera& camera) {
 	std::vector<Weak<Sprite>> filtered_sprites;
 
 	for (const Weak<Sprite>& weak_sprite : sprites) {
-		if (weak_sprite.expired()) continue;
-
-		filtered_sprites.push_back(weak_sprite);
-
 		// Not thread safe if I later implement multi-threading
+		if (weak_sprite.expired()) continue;
+		filtered_sprites.push_back(weak_sprite);
 		Shared<Sprite> sprite = weak_sprite.lock();
 
 		Matrix4 model = Matrix4::identity();
 		
+		// Regular transformations
 		model.translate(Vector3(sprite->transform.position, 0));
-		
-		model.translate(Vector3(
-			0.5f,
-			0.5f,
-			0
-		));
-		
 		model.rotate(sprite->transform.rotation, Vector3(0, 0, 1));
 		model.scale(Vector3(
 			sprite->texture->get_width() * sprite->transform.scale.x,
@@ -70,11 +62,22 @@ void Renderer::render(const Window& window, const Camera& camera) {
 			1
 		));
 
-		model.translate(Vector3(
-			-0.5f,
-			-0.5f,
-			0
-		));
+		// Offset & centered translations
+		Vector2 offset(
+			sprite->offset.x / sprite->texture->get_width(),
+			sprite->offset.y / sprite->texture->get_height()
+		);
+
+		if (!sprite->transform.scale.is_any_zero()) {
+			offset.x /= sprite->transform.scale.x;
+			offset.y /= sprite->transform.scale.y;
+		}
+
+		if (sprite->centered) {
+			offset -= 0.5f;
+		}
+		
+		model.translate(Vector3(offset, 0));
 
 		program->set_mat4("model", model);
 

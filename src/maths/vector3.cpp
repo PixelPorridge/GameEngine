@@ -41,6 +41,26 @@ Vector3 Vector3::cross(const Vector3& other) const {
 	);
 }
 
+bool Vector3::is_any_zero() const {
+	return x == 0 || y == 0 || z == 0;
+}
+
+bool Vector3::is_any_almost_zero() const {
+	return std::abs(x) < EPSILON || std::abs(y) < EPSILON || std::abs(z) < EPSILON;
+}
+
+bool Vector3::is_almost_zero() const {
+	return std::abs(x) < EPSILON && std::abs(y) < EPSILON && std::abs(z) < EPSILON;
+}
+
+void Vector3::zero_if_almost() {
+	if (std::abs(x) < EPSILON && std::abs(y) < EPSILON && std::abs(z) < EPSILON) {
+		x = 0;
+		y = 0;
+		z = 0;
+	}
+}
+
 const float& Vector3::operator[](int index) const {
 	return axis[index];
 }

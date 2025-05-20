@@ -32,6 +32,25 @@ float Vector2::dot(const Vector2& other) const {
 	return x * other.x + y * other.y;
 }
 
+bool Vector2::is_any_zero() const {
+	return x == 0 || y == 0;
+}
+
+bool Vector2::is_any_almost_zero() const {
+	return std::abs(x) < EPSILON || std::abs(y) < EPSILON;
+}
+
+bool Vector2::is_almost_zero() const {
+	return std::abs(x) < EPSILON && std::abs(y) < EPSILON;
+}
+
+void Vector2::zero_if_almost() {
+	if (std::abs(x) < EPSILON && std::abs(y) < EPSILON) {
+		x = 0;
+		y = 0;
+	}
+}
+
 const float& Vector2::operator[](int index) const {
 	return axis[index];
 }

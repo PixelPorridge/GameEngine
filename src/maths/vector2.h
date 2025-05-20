@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cmath>
+#include "maths.h"
 
 class Vector2 {
 public:
@@ -20,6 +20,11 @@ public:
 	Vector2 normalised() const;
 
 	float dot(const Vector2& other) const;
+
+	bool is_any_zero() const;
+	bool is_any_almost_zero() const;
+	bool is_almost_zero() const;
+	void zero_if_almost();
 
 	const float& operator[](int index) const;
 	float& operator[](int index);

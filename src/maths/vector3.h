@@ -1,8 +1,7 @@
 #pragma once
 
+#include "maths.h"
 #include "vector2.h"
-
-#include <cmath>
 
 class Vector3 {
 public:
@@ -23,6 +22,11 @@ public:
 
 	float dot(const Vector3& other) const;
 	Vector3 cross(const Vector3& other) const;
+
+	bool is_any_zero() const;
+	bool is_any_almost_zero() const;
+	bool is_almost_zero() const;
+	void zero_if_almost();
 
 	const float& operator[](int index) const;
 	float& operator[](int index);
