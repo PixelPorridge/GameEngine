@@ -8,7 +8,7 @@
 
 class Sprite {
 public:
-	Transform transform;
+	Shared<Transform> transform;
 	Unique<Texture> texture;
 
 	bool centered = true;

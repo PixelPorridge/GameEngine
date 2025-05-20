@@ -59,24 +59,45 @@ void Renderer::render(const Window& window, const Camera& camera) {
 		filtered_sprites.push_back(weak_sprite);
 		Shared<Sprite> sprite = weak_sprite.lock();
 
+		// Get parent transforms
+		std::vector<Shared<Transform>> parents;
+		Weak<Transform> weak_parent = sprite->transform->get_parent();
+
+		while (!weak_parent.expired()) {
+			Shared<Transform> parent = weak_parent.lock();
+			parents.push_back(parent);
+			weak_parent = parent->get_parent();
+		}
+
 		Matrix4 model = Matrix4::identity();
-		
-		model.translate(Vector3(sprite->transform.position, 0));
-		model.rotate(sprite->transform.rotation, Vector3(0, 0, 1));
+
+		// Apply parent transformations from root to sprite parent
+		for (int i = parents.size() - 1; i >= 0; i--) {
+			Shared<Transform> parent = parents[i];
+
+			model.translate(Vector3(parent->position, 0));
+			model.rotate(parent->rotation, Vector3(0, 0, 1));
+			model.scale(Vector3(parent->scale, 1));
+		}
+
+		// Sprite transformations
+		model.translate(Vector3(sprite->transform->position, 0));
+		model.rotate(sprite->transform->rotation, Vector3(0, 0, 1));
 		model.scale(Vector3(
-			sprite->texture->get_width() * sprite->transform.scale.x,
-			sprite->texture->get_height() * sprite->transform.scale.y,
+			sprite->texture->get_width() * sprite->transform->scale.x,
+			sprite->texture->get_height() * sprite->transform->scale.y,
 			1
 		));
 
+		// Sprite offset translations
 		Vector2 offset(
 			sprite->offset.x / sprite->texture->get_width(),
 			sprite->offset.y / sprite->texture->get_height()
 		);
 
-		if (!sprite->transform.scale.is_any_zero()) {
-			offset.x /= sprite->transform.scale.x;
-			offset.y /= sprite->transform.scale.y;
+		if (!sprite->transform->scale.is_any_zero()) {
+			offset.x /= sprite->transform->scale.x;
+			offset.y /= sprite->transform->scale.y;
 		}
 
 		if (sprite->centered) {
@@ -87,6 +108,7 @@ void Renderer::render(const Window& window, const Camera& camera) {
 
 		program->set_mat4("model", model);
 
+		// Draw sprite
 		sprite->texture->bind(0);
 		program->use();
 		vertex_array->bind();
