@@ -40,13 +40,20 @@ void Renderer::render(const Window& window, const Camera& camera) {
 	Matrix4 projection = Matrix4::orthographic(0, window_size.width, window_size.height, 0, -10000, 10000);
 	Matrix4 view = Matrix4::identity();
 
+	// Camera offset translations
+	Vector2 view_offset = -camera.offset;
+
 	if (camera.centered) {
-		view.translate(Vector3(window_size.width / 2, window_size.height / 2, 0));
+		view_offset.x += window_size.width / 2;
+		view_offset.y += window_size.height / 2;
 	}
 
+	view.translate(Vector3(view_offset, 0));
+
+	// Camera transformations
 	view.rotate(-camera.rotation, Vector3(0, 0, 1));
 	view.scale(Vector3(camera.zoom, 1));
-	view.translate(Vector3(-camera.position - camera.offset, 0));
+	view.translate(Vector3(-camera.position, 0));
 
 	program->set_mat4("projection", projection);
 	program->set_mat4("view", view);
@@ -90,21 +97,21 @@ void Renderer::render(const Window& window, const Camera& camera) {
 		));
 
 		// Sprite offset translations
-		Vector2 offset(
+		Vector2 model_offset(
 			sprite->offset.x / sprite->texture->get_width(),
 			sprite->offset.y / sprite->texture->get_height()
 		);
 
 		if (!sprite->transform->scale.is_any_zero()) {
-			offset.x /= sprite->transform->scale.x;
-			offset.y /= sprite->transform->scale.y;
+			model_offset.x /= sprite->transform->scale.x;
+			model_offset.y /= sprite->transform->scale.y;
 		}
 
 		if (sprite->centered) {
-			offset -= 0.5f;
+			model_offset -= 0.5f;
 		}
 		
-		model.translate(Vector3(offset, 0));
+		model.translate(Vector3(model_offset, 0));
 
 		program->set_mat4("model", model);
 
