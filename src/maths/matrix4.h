@@ -1,6 +1,7 @@
 #pragma once
 
 #include "maths.h"
+#include "vector2.h"
 #include "vector3.h"
 #include "vector4.h"
 #include "components/camera.h"
@@ -67,6 +68,10 @@ public:
 
 	Matrix4 operator*(const Matrix4& other) const;
 	void operator*=(const Matrix4& other);
+
+	Vector4 operator*(const Vector4& vector) const;
+	Vector3 operator*(const Vector3& vector) const;
+	Vector2 operator*(const Vector2& vector) const;
 
 	bool operator==(const Matrix4& other) const;
 	bool operator!=(const Matrix4& other) const;

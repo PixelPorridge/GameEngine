@@ -170,6 +170,34 @@ void Matrix4::operator*=(const Matrix4& other) {
 	set_matrix(*this * other);
 }
 
+Vector4 Matrix4::operator*(const Vector4& vector) const {
+	Vector4 new_vector;
+
+	for (int i = 0; i < 4; i++) {
+		float value = 0;
+
+		for (int j = 0; j < 4; j++) {
+			value += columns[j][i] * vector[j];
+		}
+
+		new_vector[i] = value;
+	}
+
+	return new_vector;
+}
+
+Vector3 Matrix4::operator*(const Vector3& vector) const {
+	Vector4 result = *this * Vector4(vector, 1);
+
+	return Vector3(result.x, result.y, result.z);
+}
+
+Vector2 Matrix4::operator*(const Vector2& vector) const {
+	Vector4 result = *this * Vector4(vector, 0, 1);
+
+	return Vector2(result.x, result.y);
+}
+
 bool Matrix4::operator==(const Matrix4& other) const {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
