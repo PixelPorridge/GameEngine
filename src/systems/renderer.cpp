@@ -41,7 +41,10 @@ void Renderer::render(const Window& window, const Camera& camera) {
 	Matrix4 view = Matrix4::identity();
 
 	// Camera offset translations
-	Vector2 view_offset = -camera.offset;
+	// This could be changed so that the offset is translated when the camera
+	// position is translated. We'll see how this method goes first.
+	// Centered property would remain here though.
+	Vector2 view_offset = -camera.offset * camera.zoom;
 
 	if (camera.centered) {
 		view_offset.x += window_size.width / 2;
@@ -102,15 +105,10 @@ void Renderer::render(const Window& window, const Camera& camera) {
 			sprite->offset.y / sprite->texture->get_height()
 		);
 
-		if (!sprite->transform->scale.is_any_zero()) {
-			model_offset.x /= sprite->transform->scale.x;
-			model_offset.y /= sprite->transform->scale.y;
-		}
-
 		if (sprite->centered) {
 			model_offset -= 0.5f;
 		}
-		
+
 		model.translate(Vector3(model_offset, 0));
 
 		program->set_mat4("model", model);
