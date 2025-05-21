@@ -35,15 +35,14 @@ void Renderer::add(const Shared<Sprite>& sprite) {
 }
 
 void Renderer::render(const Window& window, const Camera& camera) {
-	Vector2 window_size = window.get_size();
+	Vector2 window_size = window.get_viewport_size();
 
 	Matrix4 projection = Matrix4::orthographic(0, window_size.width, window_size.height, 0, -10000, 10000);
 	Matrix4 view = Matrix4::identity();
 
 	// Camera offset translations
-	// This could be changed so that the offset is translated when the camera
-	// position is translated. We'll see how this method goes first.
-	// Centered property would remain here though.
+	// This could be changed so that the offset is translated when the camera position is translated
+	// We'll see how this method goes first, centered property would remain here though if I change it
 	Vector2 view_offset = -camera.offset * camera.zoom;
 
 	if (camera.centered) {

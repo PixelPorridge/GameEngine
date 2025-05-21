@@ -7,6 +7,7 @@
 #include "maths/colour.h"
 #include "maths/matrix4.h"
 #include "utils/debug.h"
+#include "components/camera.h"
 
 #include <vector>
 #include <string>
@@ -32,9 +33,13 @@ public:
 	float get_delta() const;
 
 	Vector2 get_size() const;
+	Vector2 get_viewport_size() const;
 	Vector2 get_mouse_position() const;
+	Vector2 get_mouse_viewport_position() const;
+	Vector2 get_mouse_world_position(const Camera& camera) const;
 
 	void set_size(int width, int height);
+	void set_viewport_size(int width, int height);
 	void set_title(const std::string& title);
 	void set_icon(const std::vector<std::string>& paths);
 	void set_resizable(bool resizable);
@@ -44,7 +49,7 @@ public:
 	void set_update_callback(std::function<void()> callback);
 
 private:
-	static inline void on_framebuffer_resized(GLFWwindow* window, int width, int height) {
+	static inline void on_viewport_resized(GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	}
 };

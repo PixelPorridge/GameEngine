@@ -10,7 +10,7 @@ Window::Window(int width, int height, const std::string& title) {
 	glfw_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 	glfwMakeContextCurrent(glfw_window);
 
-	glfwSetFramebufferSizeCallback(glfw_window, on_framebuffer_resized);
+	glfwSetFramebufferSizeCallback(glfw_window, on_viewport_resized);
 
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
@@ -53,12 +53,26 @@ float Window::get_delta() const {
 
 Vector2 Window::get_size() const {
 	int width, height;
+	glfwGetWindowSize(glfw_window, &width, &height);
+
+	return Vector2(width, height);
+}
+
+Vector2 Window::get_viewport_size() const {
+	int width, height;
 	glfwGetFramebufferSize(glfw_window, &width, &height);
 
 	return Vector2(width, height);
 }
 
 Vector2 Window::get_mouse_position() const {
+	double mouse_x, mouse_y;
+	glfwGetCursorPos(glfw_window, &mouse_x, &mouse_y);
+
+	return Vector2(mouse_x, mouse_y);
+}
+
+Vector2 Window::get_mouse_viewport_position() const {
 	float scale_x, scale_y;
 	glfwGetWindowContentScale(glfw_window, &scale_x, &scale_y);
 
@@ -68,8 +82,39 @@ Vector2 Window::get_mouse_position() const {
 	return Vector2(mouse_x * scale_x, mouse_y * scale_y);
 }
 
+Vector2 Window::get_mouse_world_position(const Camera& camera) const {
+	int width, height;
+	glfwGetFramebufferSize(glfw_window, &width, &height);
+
+	// The transformation is calculated by interting the view matrix from Renderer.cpp
+	// This is done by performing the operations in reverse order, and inverting some multiplicative parts
+	Matrix4 inverse_view = Matrix4::identity();
+
+	inverse_view.translate(Vector3(camera.position, 0));
+	inverse_view.scale(Vector3(1 / camera.zoom.x, 1 / camera.zoom.y, 1));
+	inverse_view.rotate(camera.rotation, Vector3(0, 0, 1));
+
+	Vector2 offset = -camera.offset * camera.zoom;
+
+	if (camera.centered) {
+		offset.x += width / 2.0f;
+		offset.y += height / 2.0f;
+	}
+
+	inverse_view.translate(Vector3(-offset, 0));
+
+	return inverse_view * get_mouse_viewport_position();
+}
+
 void Window::set_size(int width, int height) {
 	glfwSetWindowSize(glfw_window, width, height);
+}
+
+void Window::set_viewport_size(int width, int height) {
+	float scale_x, scale_y;
+	glfwGetWindowContentScale(glfw_window, &scale_x, &scale_y);
+
+	glfwSetWindowSize(glfw_window, width / scale_x, height / scale_y);
 }
 
 void Window::set_title(const std::string& title) {
