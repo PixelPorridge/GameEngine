@@ -7,6 +7,10 @@
 *	This vector type is not typically used to represent a point in space.
 */
 
+std::string Vector4::to_string() const {
+	return "(" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ", " + std::to_string(w) + ")";
+}
+
 const float& Vector4::operator[](int index) const {
 	return axis[index];
 }

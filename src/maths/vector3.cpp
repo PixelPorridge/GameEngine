@@ -61,6 +61,10 @@ void Vector3::zero_if_almost() {
 	}
 }
 
+std::string Vector3::to_string() const {
+	return "(" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ")";
+}
+
 const float& Vector3::operator[](int index) const {
 	return axis[index];
 }

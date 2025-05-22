@@ -1,8 +1,9 @@
 #pragma once
 
 #include "core/core.h"
-#include "transform.h"
 #include "opengl/texture.h"
+#include "transform.h"
+#include "maths/matrix4.h"
 
 #include <string>
 
@@ -15,4 +16,6 @@ public:
 	Vector2 offset;
 
 	Sprite(const std::string& path);
+
+	Matrix4 _get_matrix() const;
 };

@@ -1,24 +1,24 @@
 #pragma once
 
 #include "core/core.h"
-#include "utils/debug.h"
-#include "maths/matrix4.h"
-#include "components/sprite.h"
-#include "components/camera.h"
-#include "systems/window.h"
 #include "opengl/program.h"
 #include "opengl/shader.h"
+#include "opengl/vertex_array.h"
 #include "opengl/vertex_buffer.h"
 #include "opengl/vertex_buffer_layout.h"
 #include "opengl/element_buffer.h"
-#include "opengl/vertex_array.h"
+#include "systems/window.h"
+#include "components/camera.h"
+#include "components/sprite.h"
+#include "maths/matrix4.h"
+#include "maths/vector2.h"
 
-#include <vector>
 #include <string>
+#include <vector>
 
 class Renderer {
 private:
-	std::vector<Weak<Sprite>> sprites; // List of sprites to draw on next render call
+	std::vector<Weak<Sprite>> sprites;
 
 	Unique<VertexBuffer> vertex_buffer;
 	Unique<ElementBuffer> element_buffer;
@@ -28,11 +28,11 @@ private:
 public:
 	Renderer();
 
-	void add(const Shared<Sprite>& sprite); // Adds the sprite to the queue for rendering
-	void render(const Window& window, const Camera& camera); // Renders all the queued sprites then clears the list
+	void add(const Shared<Sprite>& sprite);
+	void render(const Window& window, const Camera& camera = Camera());
 };
 
-const std::string default_source_vertex = "#version 460 core\n"
+const std::string default_vertex_source = "#version 460 core\n"
 	"layout(location = 0) in vec4 vertex;\n"
 	"uniform mat4 projection;\n"
 	"uniform mat4 view;\n"
@@ -43,7 +43,7 @@ const std::string default_source_vertex = "#version 460 core\n"
 	"	texture_coordinates = vertex.zw;\n"
 	"}\0";
 
-const std::string default_source_fragment = "#version 460 core\n"
+const std::string default_fragment_source = "#version 460 core\n"
 	"in vec2 texture_coordinates;\n"
 	"layout(binding = 0) uniform sampler2D texture_sampler;\n"
 	"out vec4 pixel;\n"

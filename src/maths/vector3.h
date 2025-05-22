@@ -3,6 +3,8 @@
 #include "maths.h"
 #include "vector2.h"
 
+#include <string>
+
 class Vector3 {
 public:
 	union {
@@ -27,6 +29,8 @@ public:
 	bool is_any_almost_zero() const;
 	bool is_almost_zero() const;
 	void zero_if_almost();
+
+	std::string to_string() const;
 
 	const float& operator[](int index) const;
 	float& operator[](int index);

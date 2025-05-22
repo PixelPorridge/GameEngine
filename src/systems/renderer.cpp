@@ -25,8 +25,8 @@ Renderer::Renderer() {
 	vertex_array->link_vertex_buffer(*vertex_buffer, vertex_buffer_layout);
 	vertex_array->link_element_buffer(*element_buffer);
 
-	Shader vertex_shader = Shader::from_string_vertex(default_source_vertex);
-	Shader fragment_shader = Shader::from_string_fragment(default_source_fragment);
+	Shader vertex_shader = Shader::from_string_vertex(default_vertex_source);
+	Shader fragment_shader = Shader::from_string_fragment(default_fragment_source);
 	program = create_unique<Program>(vertex_shader, fragment_shader);
 }
 
@@ -35,27 +35,10 @@ void Renderer::add(const Shared<Sprite>& sprite) {
 }
 
 void Renderer::render(const Window& window, const Camera& camera) {
-	Vector2 window_size = window.get_viewport_size();
+	Vector2 viewport_size = window.get_viewport_size();
 
-	Matrix4 projection = Matrix4::orthographic(0, window_size.width, window_size.height, 0, -10000, 10000);
-	Matrix4 view = Matrix4::identity();
-
-	// Camera offset translations
-	// This could be changed so that the offset is translated when the camera position is translated
-	// We'll see how this method goes first, centered property would remain here though if I change it
-	Vector2 view_offset = -camera.offset * camera.zoom;
-
-	if (camera.centered) {
-		view_offset.x += window_size.width / 2;
-		view_offset.y += window_size.height / 2;
-	}
-
-	view.translate(Vector3(view_offset, 0));
-
-	// Camera transformations
-	view.rotate(-camera.rotation, Vector3(0, 0, 1));
-	view.scale(Vector3(camera.zoom, 1));
-	view.translate(Vector3(-camera.position, 0));
+	Matrix4 projection = Matrix4::orthographic(0, viewport_size.width, viewport_size.height, 0, -10000, 10000);
+	Matrix4 view = camera._get_matrix(window);
 
 	program->set_mat4("projection", projection);
 	program->set_mat4("view", view);
@@ -69,46 +52,18 @@ void Renderer::render(const Window& window, const Camera& camera) {
 		Shared<Sprite> sprite = weak_sprite.lock();
 
 		// Get parent transforms
-		std::vector<Shared<Transform>> parents;
-		Weak<Transform> weak_parent = sprite->transform->get_parent();
-
-		while (!weak_parent.expired()) {
-			Shared<Transform> parent = weak_parent.lock();
-			parents.push_back(parent);
-			weak_parent = parent->get_parent();
-		}
-
-		Matrix4 model = Matrix4::identity();
+		std::vector<Shared<Transform>> parents = sprite->transform->_get_parents();
 
 		// Apply parent transformations from root to sprite parent
+		Matrix4 model = Matrix4::identity();
+
 		for (int i = parents.size() - 1; i >= 0; i--) {
 			Shared<Transform> parent = parents[i];
-
-			model.translate(Vector3(parent->position, 0));
-			model.rotate(parent->rotation, Vector3(0, 0, 1));
-			model.scale(Vector3(parent->scale, 1));
+			model *= parent->_get_matrix();
 		}
 
-		// Sprite transformations
-		model.translate(Vector3(sprite->transform->position, 0));
-		model.rotate(sprite->transform->rotation, Vector3(0, 0, 1));
-		model.scale(Vector3(
-			sprite->texture->get_width() * sprite->transform->scale.x,
-			sprite->texture->get_height() * sprite->transform->scale.y,
-			1
-		));
-
-		// Sprite offset translations
-		Vector2 model_offset(
-			sprite->offset.x / sprite->texture->get_width(),
-			sprite->offset.y / sprite->texture->get_height()
-		);
-
-		if (sprite->centered) {
-			model_offset -= 0.5f;
-		}
-
-		model.translate(Vector3(model_offset, 0));
+		// Apply sprite transformation (includes transform and offset)
+		model *= sprite->_get_matrix();
 
 		program->set_mat4("model", model);
 

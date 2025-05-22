@@ -1,7 +1,9 @@
 #pragma once
 
-#include "vector2.h"
 #include "vector3.h"
+#include "vector2.h"
+
+#include <string>
 
 class Vector4 {
 public:
@@ -14,6 +16,8 @@ public:
 	Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 	Vector4(const Vector2& xy, float z, float w) : x(xy.x), y(xy.y), z(z), w(w) {}
 	Vector4(const Vector3& xyz, float w) : x(xyz.x), y(xyz.y), z(xyz.z), w(w) {}
+
+	std::string to_string() const;
 
 	const float& operator[](int index) const;
 	float& operator[](int index);

@@ -1,13 +1,9 @@
 #pragma once
 
 #include "maths.h"
-#include "vector2.h"
-#include "vector3.h"
 #include "vector4.h"
-#include "components/camera.h"
-#include "components/transform.h"
-
-#include <cmath>
+#include "vector3.h"
+#include "vector2.h"
 
 class Matrix4 {
 public:

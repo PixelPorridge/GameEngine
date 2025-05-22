@@ -1,9 +1,9 @@
 #pragma once
 
+#include "glad/glad.h"
 #include "shader.h"
 #include "maths/matrix4.h"
 
-#include <glad/glad.h>
 #include <string>
 
 class Program {

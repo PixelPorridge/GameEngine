@@ -5,12 +5,9 @@
 #include "stb/stb_image.h"
 #include "maths/vector2.h"
 #include "maths/colour.h"
-#include "maths/matrix4.h"
-#include "utils/debug.h"
-#include "components/camera.h"
 
-#include <vector>
 #include <string>
+#include <vector>
 #include <functional>
 
 class Window {
@@ -36,7 +33,6 @@ public:
 	Vector2 get_viewport_size() const;
 	Vector2 get_mouse_position() const;
 	Vector2 get_mouse_viewport_position() const;
-	Vector2 get_mouse_world_position(const Camera& camera) const;
 
 	void set_size(int width, int height);
 	void set_viewport_size(int width, int height);

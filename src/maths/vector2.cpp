@@ -51,6 +51,10 @@ void Vector2::zero_if_almost() {
 	}
 }
 
+std::string Vector2::to_string() const {
+	return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
+}
+
 const float& Vector2::operator[](int index) const {
 	return axis[index];
 }
