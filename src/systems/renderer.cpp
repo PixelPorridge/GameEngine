@@ -63,12 +63,12 @@ void Renderer::render(const Window& window, const Camera& camera) {
 		filtered_sprites.push_back(weak_sprite);
 		Shared<Sprite> sprite = weak_sprite.lock();
 
+		Matrix4 model = Matrix4::identity();
+
 		// Get parent transforms
 		std::vector<Shared<Transform>> parents = sprite->transform->_get_parents();
 
 		// Apply parent transformations from root to sprite parent
-		Matrix4 model = Matrix4::identity();
-
 		for (int i = parents.size() - 1; i >= 0; i--) {
 			Shared<Transform> parent = parents[i];
 			model *= parent->_get_matrix();

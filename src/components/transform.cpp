@@ -40,6 +40,19 @@ Vector2 Transform::get_global_scale() const {
 }
 
 void Transform::set_parent(const Shared<Transform>& transform) {
+	Weak<Transform> weak_parent = transform;
+
+	while (!weak_parent.expired()) {
+		Shared<Transform> shared_parent = weak_parent.lock();
+
+		if (shared_parent.get() == this) {
+			Debug::log("Cycle found while attempting to set transform parent!", Debug::ERROR);
+			return;
+		}
+
+		weak_parent = shared_parent->_get_parent();
+	}
+
 	parent = transform;
 }
 
@@ -53,18 +66,6 @@ std::vector<Shared<Transform>> Transform::_get_parents() const {
 
 	while (!weak_parent.expired()) {
 		Shared<Transform> shared_parent = weak_parent.lock();
-
-		auto iterator = std::find_if(parents.begin(), parents.end(),
-			[shared_parent](Shared<Transform> check_parent) {
-				return shared_parent.get() == check_parent.get();
-			}
-		);
-
-		if (iterator != parents.end() || shared_parent.get() == this) {
-			Debug::log("Transform parent chain contains cycle!", Debug::ERROR);
-			break;
-		}
-
 		parents.push_back(shared_parent);
 		weak_parent = shared_parent->_get_parent();
 	}
