@@ -31,6 +31,18 @@ Renderer::Renderer() {
 }
 
 void Renderer::add(const Shared<Sprite>& sprite) {
+	auto iterator = std::find_if(sprites.begin(), sprites.end(),
+		[sprite](Weak<Sprite> check_sprite) {
+			if (check_sprite.expired()) return false;
+			return sprite.get() == check_sprite.lock().get();
+		}
+	);
+
+	if (iterator != sprites.end()) {
+		Debug::log("Attempted to add duplicate sprite to renderer. Skipping sprite.", Debug::WARNING);
+		return;
+	}
+
 	sprites.push_back(sprite);
 }
 

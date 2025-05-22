@@ -12,6 +12,12 @@ Texture::Texture(const std::string& path) {
 	int channels;
 	unsigned char* pixels = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
+	if (pixels == nullptr) {
+		Debug::log("Failed to load texture image: " + path, Debug::ERROR);
+		stbi_image_free(pixels);
+		return;
+	}
+
 	glCreateTextures(GL_TEXTURE_2D, 1, &id);
 
 	switch (channels) {

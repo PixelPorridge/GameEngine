@@ -3,8 +3,10 @@
 #include "core/core.h"
 #include "maths/vector2.h"
 #include "maths/matrix4.h"
+#include "utils/debug.h"
 
 #include <vector>
+#include <algorithm>
 
 class Transform {
 public:

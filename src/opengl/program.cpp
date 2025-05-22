@@ -15,6 +15,15 @@ Program::Program(const Shader& vertex, const Shader& fragment) {
 	glAttachShader(id, fragment.get_id());
 
 	glLinkProgram(id);
+
+	int success;
+	char info_log[512];
+	glGetProgramiv(id, GL_LINK_STATUS, &success);
+
+	if (!success) {
+		glGetProgramInfoLog(id, 512, nullptr, info_log);
+		Debug::log("Failed to link program: " + std::string(info_log), Debug::ERROR);
+	}
 }
 
 Program::~Program() {

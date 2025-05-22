@@ -30,6 +30,8 @@ Shader Shader::from_path(const std::string& path) {
 	glShaderSource(shader.id, 1, &source_c, nullptr);
 	glCompileShader(shader.id);
 
+	check_compile_status(shader);
+
 	return shader;
 }
 
@@ -40,6 +42,8 @@ Shader Shader::from_string_vertex(const std::string& source) {
 	shader.id = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(shader.id, 1, &source_c, nullptr);
 	glCompileShader(shader.id);
+
+	check_compile_status(shader);
 
 	return shader;
 }
@@ -52,11 +56,24 @@ Shader Shader::from_string_fragment(const std::string& source) {
 	glShaderSource(shader.id, 1, &source_c, nullptr);
 	glCompileShader(shader.id);
 
+	check_compile_status(shader);
+
 	return shader;
 }
 
 Shader::~Shader() {
 	glDeleteShader(id);
+}
+
+void Shader::check_compile_status(const Shader& shader) {
+	int success;
+	char info_log[512];
+	glGetShaderiv(shader.id, GL_COMPILE_STATUS, &success);
+
+	if (!success) {
+		glGetShaderInfoLog(shader.id, 512, nullptr, info_log);
+		Debug::log("Failed to compile shader: " + std::string(info_log), Debug::ERROR);
+	}
 }
 
 unsigned int Shader::get_id() const {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glad/glad.h"
+#include "utils/debug.h"
 
 #include <string>
 #include <fstream>
@@ -11,6 +12,8 @@ private:
 	unsigned int id = 0;
 
 	Shader() {}
+
+	static void check_compile_status(const Shader& shader);
 
 public:
 	~Shader();

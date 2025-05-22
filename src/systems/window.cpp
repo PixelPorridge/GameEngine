@@ -8,11 +8,19 @@ Window::Window(int width, int height, const std::string& title) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	glfw_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
-	glfwMakeContextCurrent(glfw_window);
 
+	if (glfw_window == nullptr) {
+		Debug::log("Failed to create GLFW window!", Debug::ERROR);
+		return;
+	}
+
+	glfwMakeContextCurrent(glfw_window);
 	glfwSetFramebufferSizeCallback(glfw_window, on_viewport_resized);
 
-	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+		Debug::log("Failed to initialise Glad!", Debug::ERROR);
+		return;
+	}
 
 	glViewport(0, 0, width, height);
 	glEnable(GL_DEPTH_TEST);
@@ -103,6 +111,13 @@ void Window::set_icon(const std::vector<std::string>& paths) {
 	for (const std::string& path : paths) {
 		GLFWimage image;
 		image.pixels = stbi_load(path.c_str(), &image.width, &image.height, 0, 4);
+
+		if (image.pixels == nullptr) {
+			Debug::log("Failed to load window icon: " + path, Debug::ERROR);
+			stbi_image_free(image.pixels);
+			continue;
+		}
+
 		images.push_back(image);
 	}
 
