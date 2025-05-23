@@ -3,7 +3,7 @@
 #include "glad/glad.h"
 #include "shader.h"
 #include "maths/matrix4.h"
-#include "utils/debug.h"
+#include "core/debug.h"
 
 #include <string>
 

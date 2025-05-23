@@ -1,7 +1,7 @@
 #pragma once
 
 #include "glad/glad.h"
-#include "utils/debug.h"
+#include "core/debug.h"
 
 #include <string>
 #include <fstream>

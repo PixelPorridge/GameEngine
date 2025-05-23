@@ -2,7 +2,12 @@
 
 Sprite::Sprite(const std::string& path) {
 	transform = create_shared<Transform>();
-	texture = create_unique<Texture>(path);
+	texture = create_shared<Texture>(path);
+}
+
+Sprite::Sprite(const Shared<Texture>& texture) {
+	transform = create_shared<Transform>();
+	this->texture = texture;
 }
 
 Matrix4 Sprite::_get_matrix() const {

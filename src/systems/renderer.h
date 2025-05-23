@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/core.h"
+#include "core/memory.h"
 #include "opengl/program.h"
 #include "opengl/shader.h"
 #include "opengl/vertex_array.h"

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "core/core.h"
+#include "core/memory.h"
+#include "core/debug.h"
 #include "maths/vector2.h"
 #include "maths/matrix4.h"
-#include "utils/debug.h"
 
 #include <vector>
 #include <algorithm>

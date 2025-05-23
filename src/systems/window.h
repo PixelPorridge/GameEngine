@@ -5,7 +5,7 @@
 #include "stb/stb_image.h"
 #include "maths/vector2.h"
 #include "maths/colour.h"
-#include "utils/debug.h"
+#include "core/debug.h"
 
 #include <string>
 #include <vector>
