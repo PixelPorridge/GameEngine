@@ -1,5 +1,7 @@
 #include "renderer.h"
 
+#include "glad/glad.h"
+
 Renderer::Renderer() {
 	const std::vector<float> vertices = {
 		// Positions  // Texture

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "glad/glad.h"
 #include "shader.h"
 #include "maths/matrix4.h"
 #include "core/debug.h"

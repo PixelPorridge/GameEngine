@@ -1,5 +1,7 @@
 #include "element_buffer.h"
 
+#include "glad/glad.h"
+
 /*
 *	Element Buffer
 *

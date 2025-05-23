@@ -1,8 +1,5 @@
 #pragma once
 
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-#include "stb/stb_image.h"
 #include "maths/vector2.h"
 #include "maths/colour.h"
 #include "core/debug.h"
@@ -10,6 +7,8 @@
 #include <string>
 #include <vector>
 #include <functional>
+
+class GLFWwindow;
 
 class Window {
 private:
@@ -46,7 +45,5 @@ public:
 	void set_update_callback(std::function<void()> callback);
 
 private:
-	static inline void on_viewport_resized(GLFWwindow* window, int width, int height) {
-		glViewport(0, 0, width, height);
-	}
+	static void on_viewport_resized(GLFWwindow* window, int width, int height);
 };

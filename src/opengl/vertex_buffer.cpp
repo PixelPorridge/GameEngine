@@ -1,5 +1,7 @@
 #include "vertex_buffer.h"
 
+#include "glad/glad.h"
+
 /*
 *	Vertex Buffer
 * 

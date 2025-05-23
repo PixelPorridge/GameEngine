@@ -1,5 +1,7 @@
 #include "vertex_array.h"
 
+#include "glad/glad.h"
+
 /*
 *	Vertex Array
 * 

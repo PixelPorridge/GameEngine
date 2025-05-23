@@ -1,6 +1,5 @@
 #pragma once
 
-#include "glad/glad.h"
 #include "vertex_buffer.h"
 #include "vertex_buffer_layout.h"
 #include "element_buffer.h"

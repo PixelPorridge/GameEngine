@@ -1,5 +1,7 @@
 #include "program.h"
 
+#include "glad/glad.h"
+
 /*
 *	Program
 * 

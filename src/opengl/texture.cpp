@@ -1,5 +1,8 @@
 #include "texture.h"
 
+#include "glad/glad.h"
+#include "stb/stb_image.h"
+
 /*
 *	Texture
 * 

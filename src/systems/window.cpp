@@ -1,5 +1,9 @@
 #include "window.h"
 
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+#include "stb/stb_image.h"
+
 Window::Window(int width, int height, const std::string& title) {
 	glfwInit();
 
@@ -144,4 +148,8 @@ void Window::set_background_colour(const Colour& colour) {
 
 void Window::set_update_callback(std::function<void()> callback) {
 	update_callback = callback;
+}
+
+void Window::on_viewport_resized(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
 }
