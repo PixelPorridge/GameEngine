@@ -69,11 +69,10 @@ void Renderer::render(const Window& window, const Camera& camera) {
 
 	// Order sprites by layer
 	std::sort(sprites.begin(), sprites.end(),
-		[](Weak<Sprite> weak_a, Weak<Sprite> weak_b) {
-			Shared<Sprite> a = weak_a.lock();
-			Shared<Sprite> b = weak_b.lock();
-
-			return a->transform->_pre_calculated_layer < b->transform->_pre_calculated_layer;
+		[](Weak<Sprite> a, Weak<Sprite> b) {
+			return
+				a.lock()->transform->_pre_calculated_layer <
+				b.lock()->transform->_pre_calculated_layer;
 		}
 	);
 
