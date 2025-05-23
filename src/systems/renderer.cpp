@@ -55,20 +55,37 @@ void Renderer::render(const Window& window, const Camera& camera) {
 	program->set_mat4("projection", projection);
 	program->set_mat4("view", view);
 
+	// Filter deleted sprites and precalculate relative layer
 	std::vector<Weak<Sprite>> filtered_sprites;
 
-	for (const Weak<Sprite>& weak_sprite : sprites) {
-		// Not thread safe if I later implement multi-threading
+	for (Weak<Sprite>& weak_sprite : sprites) {
 		if (weak_sprite.expired()) continue;
+
+		weak_sprite.lock()->transform->_pre_calculate_layer();
 		filtered_sprites.push_back(weak_sprite);
+	}
+
+	sprites = filtered_sprites;
+
+	// Order sprites by layer
+	std::sort(sprites.begin(), sprites.end(),
+		[](Weak<Sprite> weak_a, Weak<Sprite> weak_b) {
+			Shared<Sprite> a = weak_a.lock();
+			Shared<Sprite> b = weak_b.lock();
+
+			return a->transform->_pre_calculated_layer < b->transform->_pre_calculated_layer;
+		}
+	);
+
+	for (const Weak<Sprite>& weak_sprite : sprites) {
 		Shared<Sprite> sprite = weak_sprite.lock();
 
 		Matrix4 model = Matrix4::identity();
 
 		// Get chain of transforms
-		std::vector<Shared<Transform>> chain = sprite->transform->_get_transform_chain();
+		std::vector<Shared<Transform>> chain = sprite->transform->_get_parent_chain();
 
-		// Apply chain of transformations from root to sprite link
+		// Apply chain of transformations from root to sprite parent
 		for (int i = chain.size() - 1; i >= 0; i--) {
 			Shared<Transform> transform = chain[i];
 			model *= transform->_get_matrix();
@@ -85,7 +102,5 @@ void Renderer::render(const Window& window, const Camera& camera) {
 		vertex_array->bind();
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	}
-
-	sprites = filtered_sprites;
+	}\
 }

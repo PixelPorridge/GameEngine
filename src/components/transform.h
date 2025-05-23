@@ -14,17 +14,21 @@ public:
 	float rotation = 0;
 	Vector2 scale = Vector2(1, 1);
 
+	int layer = 0;
+
 	Vector2 get_global_position() const;
 	float get_global_rotation() const;
 	Vector2 get_global_scale() const;
 
-	void link_to(const Shared<Transform>& transform);
+	void inherit(const Shared<Transform>& transform);
 
-	const Weak<Transform>& _get_linked_transform() const;
-	std::vector<Shared<Transform>> _get_transform_chain() const;
-
+	const Weak<Transform>& _get_parent() const;
+	std::vector<Shared<Transform>> _get_parent_chain() const;
 	Matrix4 _get_matrix() const;
 
+	int _pre_calculated_layer = 0;
+	void _pre_calculate_layer();
+
 private:
-	Weak<Transform> linked_transform;
+	Weak<Transform> parent;
 };

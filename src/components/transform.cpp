@@ -1,45 +1,42 @@
 #include "transform.h"
 
 Vector2 Transform::get_global_position() const {
-	std::vector<Shared<Transform>> parents = _get_transform_chain();
-
 	Matrix4 transformation = Matrix4::identity();
+	
+	std::vector<Shared<Transform>> chain = _get_parent_chain();
 
-	for (int i = parents.size() - 1; i >= 0; i--) {
-		Shared<Transform> shared_parent = parents[i];
-		transformation *= shared_parent->_get_matrix();
+	for (int i = chain.size() - 1; i >= 0; i--) {
+		transformation *= chain[i]->_get_matrix();
 	}
 
-	return transformation * _get_matrix() * Vector2(0, 0);
+	return transformation * position;
 }
 
 float Transform::get_global_rotation() const {
-	std::vector<Shared<Transform>> parents = _get_transform_chain();
-
 	float global_rotation = 0;
 
-	for (int i = parents.size() - 1; i >= 0; i--) {
-		Shared<Transform> shared_parent = parents[i];
-		global_rotation += shared_parent->rotation;
+	std::vector<Shared<Transform>> chain = _get_parent_chain();
+
+	for (int i = chain.size() - 1; i >= 0; i--) {
+		global_rotation += chain[i]->rotation;
 	}
 
 	return global_rotation + rotation;
 }
 
 Vector2 Transform::get_global_scale() const {
-	std::vector<Shared<Transform>> parents = _get_transform_chain();
-
 	Vector2 global_scale = Vector2(1, 1);
 
-	for (int i = parents.size() - 1; i >= 0; i--) {
-		Shared<Transform> shared_parent = parents[i];
-		global_scale *= shared_parent->scale;
+	std::vector<Shared<Transform>> chain = _get_parent_chain();
+
+	for (int i = chain.size() - 1; i >= 0; i--) {
+		global_scale *= chain[i]->scale;
 	}
 
 	return global_scale * scale;
 }
 
-void Transform::link_to(const Shared<Transform>& transform) {
+void Transform::inherit(const Shared<Transform>& transform) {
 	Weak<Transform> weak_transform = transform;
 
 	while (!weak_transform.expired()) {
@@ -50,24 +47,24 @@ void Transform::link_to(const Shared<Transform>& transform) {
 			return;
 		}
 
-		weak_transform = shared_transform->_get_linked_transform();
+		weak_transform = shared_transform->_get_parent();
 	}
 
-	linked_transform = transform;
+	parent = transform;
 }
 
-const Weak<Transform>& Transform::_get_linked_transform() const {
-	return linked_transform;
+const Weak<Transform>& Transform::_get_parent() const {
+	return parent;
 }
 
-std::vector<Shared<Transform>> Transform::_get_transform_chain() const {
+std::vector<Shared<Transform>> Transform::_get_parent_chain() const {
 	std::vector<Shared<Transform>> chain;
-	Weak<Transform> weak_transform = linked_transform;
+	Weak<Transform> weak_transform = parent;
 
 	while (!weak_transform.expired()) {
 		Shared<Transform> shared_transform = weak_transform.lock();
 		chain.push_back(shared_transform);
-		weak_transform = shared_transform->_get_linked_transform();
+		weak_transform = shared_transform->_get_parent();
 	}
 
 	return chain;
@@ -81,4 +78,15 @@ Matrix4 Transform::_get_matrix() const {
 	matrix.scale(Vector3(scale, 1));
 
 	return matrix;
+}
+
+void Transform::_pre_calculate_layer() {
+	_pre_calculated_layer = layer;
+
+	std::vector<Shared<Transform>> chain = _get_parent_chain();
+
+	for (int i = 0; i < chain.size(); i++) {
+		Shared<Transform> transform = chain[i];
+		_pre_calculated_layer += transform->layer;
+	}
 }
