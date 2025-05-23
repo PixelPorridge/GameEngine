@@ -65,13 +65,13 @@ void Renderer::render(const Window& window, const Camera& camera) {
 
 		Matrix4 model = Matrix4::identity();
 
-		// Get parent transforms
-		std::vector<Shared<Transform>> parents = sprite->transform->_get_parents();
+		// Get chain of transforms
+		std::vector<Shared<Transform>> chain = sprite->transform->_get_transform_chain();
 
-		// Apply parent transformations from root to sprite parent
-		for (int i = parents.size() - 1; i >= 0; i--) {
-			Shared<Transform> parent = parents[i];
-			model *= parent->_get_matrix();
+		// Apply chain of transformations from root to sprite link
+		for (int i = chain.size() - 1; i >= 0; i--) {
+			Shared<Transform> transform = chain[i];
+			model *= transform->_get_matrix();
 		}
 
 		// Apply sprite transformation (includes transform and offset)

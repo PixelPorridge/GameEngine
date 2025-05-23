@@ -15,6 +15,7 @@ Window::Window(int width, int height, const std::string& title) {
 	}
 
 	glfwMakeContextCurrent(glfw_window);
+	glfwSetWindowUserPointer(glfw_window, this);
 	glfwSetFramebufferSizeCallback(glfw_window, on_viewport_resized);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -23,7 +24,8 @@ Window::Window(int width, int height, const std::string& title) {
 	}
 
 	glViewport(0, 0, width, height);
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Window::run() {
@@ -32,10 +34,10 @@ void Window::run() {
 		delta = current_frame - last_frame;
 		last_frame = current_frame;
 
+		glfwPollEvents();
+
 		glClearColor(background_colour.r, background_colour.g, background_colour.b, background_colour.a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glfwPollEvents();
 
 		if (update_callback != nullptr) {
 			update_callback();

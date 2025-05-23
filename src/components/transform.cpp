@@ -1,7 +1,7 @@
 #include "transform.h"
 
 Vector2 Transform::get_global_position() const {
-	std::vector<Shared<Transform>> parents = _get_parents();
+	std::vector<Shared<Transform>> parents = _get_transform_chain();
 
 	Matrix4 transformation = Matrix4::identity();
 
@@ -14,7 +14,7 @@ Vector2 Transform::get_global_position() const {
 }
 
 float Transform::get_global_rotation() const {
-	std::vector<Shared<Transform>> parents = _get_parents();
+	std::vector<Shared<Transform>> parents = _get_transform_chain();
 
 	float global_rotation = 0;
 
@@ -27,7 +27,7 @@ float Transform::get_global_rotation() const {
 }
 
 Vector2 Transform::get_global_scale() const {
-	std::vector<Shared<Transform>> parents = _get_parents();
+	std::vector<Shared<Transform>> parents = _get_transform_chain();
 
 	Vector2 global_scale = Vector2(1, 1);
 
@@ -39,46 +39,46 @@ Vector2 Transform::get_global_scale() const {
 	return global_scale * scale;
 }
 
-void Transform::set_parent(const Shared<Transform>& transform) {
-	Weak<Transform> weak_parent = transform;
+void Transform::link_to(const Shared<Transform>& transform) {
+	Weak<Transform> weak_transform = transform;
 
-	while (!weak_parent.expired()) {
-		Shared<Transform> shared_parent = weak_parent.lock();
+	while (!weak_transform.expired()) {
+		Shared<Transform> shared_transform = weak_transform.lock();
 
-		if (shared_parent.get() == this) {
+		if (shared_transform.get() == this) {
 			Debug::log("Cycle found while attempting to set transform parent!", Debug::ERROR);
 			return;
 		}
 
-		weak_parent = shared_parent->_get_parent();
+		weak_transform = shared_transform->_get_linked_transform();
 	}
 
-	parent = transform;
+	linked_transform = transform;
 }
 
-const Weak<Transform>& Transform::_get_parent() const {
-	return parent;
+const Weak<Transform>& Transform::_get_linked_transform() const {
+	return linked_transform;
 }
 
-std::vector<Shared<Transform>> Transform::_get_parents() const {
-	std::vector<Shared<Transform>> parents;
-	Weak<Transform> weak_parent = parent;
+std::vector<Shared<Transform>> Transform::_get_transform_chain() const {
+	std::vector<Shared<Transform>> chain;
+	Weak<Transform> weak_transform = linked_transform;
 
-	while (!weak_parent.expired()) {
-		Shared<Transform> shared_parent = weak_parent.lock();
-		parents.push_back(shared_parent);
-		weak_parent = shared_parent->_get_parent();
+	while (!weak_transform.expired()) {
+		Shared<Transform> shared_transform = weak_transform.lock();
+		chain.push_back(shared_transform);
+		weak_transform = shared_transform->_get_linked_transform();
 	}
 
-	return parents;
+	return chain;
 }
 
 Matrix4 Transform::_get_matrix() const {
-	Matrix4 model = Matrix4::identity();
+	Matrix4 matrix = Matrix4::identity();
 
-	model.translate(Vector3(position, 0));
-	model.rotate(rotation, Vector3(0, 0, 1));
-	model.scale(Vector3(scale, 1));
+	matrix.translate(Vector3(position, 0));
+	matrix.rotate(rotation, Vector3(0, 0, 1));
+	matrix.scale(Vector3(scale, 1));
 
-	return model;
+	return matrix;
 }

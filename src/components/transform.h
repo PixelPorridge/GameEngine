@@ -18,13 +18,13 @@ public:
 	float get_global_rotation() const;
 	Vector2 get_global_scale() const;
 
-	void set_parent(const Shared<Transform>& transform);
+	void link_to(const Shared<Transform>& transform);
 
-	const Weak<Transform>& _get_parent() const;
-	std::vector<Shared<Transform>> _get_parents() const;
+	const Weak<Transform>& _get_linked_transform() const;
+	std::vector<Shared<Transform>> _get_transform_chain() const;
 
 	Matrix4 _get_matrix() const;
 
 private:
-	Weak<Transform> parent;
+	Weak<Transform> linked_transform;
 };
